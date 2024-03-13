@@ -121,8 +121,8 @@ impl Prices {
 
 
 pub fn set_base_url(url: String) {
-  let mut currency_converter = PRICES.write().unwrap();
-  currency_converter.set_base_url(url);
+  let mut prices = PRICES.write().unwrap();
+  prices.set_base_url(url);
 }
 
 pub fn convert_currency(params: ConvertCurrencyParams)-> Result<ConvertCurrencyReturn> {
