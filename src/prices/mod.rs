@@ -2,6 +2,8 @@ pub mod types;
 use std::result;
 
 use reqwest;
+use std::sync::{Arc, RwLock};
+use lazy_static;
 
 use self::types::{
   ConvertCurrencyJsonData, ConvertCurrencyParams, ConvertCurrencyReturn, GetTickerJsonData,
@@ -9,6 +11,10 @@ use self::types::{
 };
 
 const BASE_URL: &str = "http://prices.murrayrothbot.com";
+
+lazy_static::lazy_static! {
+  static ref PRICES: Arc<RwLock<Prices>> = Arc::new(RwLock::new(Prices::new(BASE_URL.to_string())));
+}
 
 /// [`Price`] error
 #[derive(thiserror::Error, Debug)]
@@ -21,73 +27,115 @@ pub enum PriceError {
 
 type Result<T> = result::Result<T, PriceError>;
 
-#[tokio::main]
-pub async fn convert_currency(
-  ConvertCurrencyParams { currency, value }: ConvertCurrencyParams,
-) -> Result<ConvertCurrencyReturn> {
-  let url = format!("{}/convert", BASE_URL);
-  let params = [
-    ("currency", currency.to_string()),
-    ("value", value.to_string()),
-  ];
-
-  let url = match reqwest::Url::parse_with_params(&url, &params) {
-    Ok(url) => url,
-    Err(_) => return Err(PriceError::InvalidURLParams),
-  };
-
-  let client = reqwest::Client::new()
-    .get(url)
-    .header("Accept", "application/json");
-
-  let resp = match client.send().await {
-    Ok(resp) => resp.json::<ConvertCurrencyJsonData>().await.unwrap(),
-    Err(_) => return Err(PriceError::BadRequest),
-  };
-
-  Ok(resp.data)
+struct Prices {
+  pub base_url: String,
 }
 
-#[tokio::main]
-pub async fn get_ticker(GetTickerParams { symbol }: GetTickerParams) -> Result<GetTickerReturn> {
-  let url = format!("{}/ticker", BASE_URL);
-  let params = [("symbol", symbol.to_string())];
+impl Prices {
+  pub fn new(url: String) -> Self {
+    Self { base_url: url }
+  }
 
-  let url = match reqwest::Url::parse_with_params(&url, &params) {
-    Ok(url) => url,
-    Err(_) => return Err(PriceError::InvalidURLParams),
-  };
+  pub fn set_base_url(&mut self, base_url: String) {
+    self.base_url = base_url;
+  }
 
-  let client = reqwest::Client::new()
-    .get(url)
-    .header("Accept", "application/json");
+  #[tokio::main]
+  pub async fn convert_currency(
+    &self,
+    ConvertCurrencyParams { currency, value }: ConvertCurrencyParams,
+  ) -> Result<ConvertCurrencyReturn> {
+    let url = format!("{}/convert", self.base_url);
+    let params = [
+      ("currency", currency.to_string()),
+      ("value", value.to_string()),
+    ];
 
-  let resp = match client.send().await {
-    Ok(resp) => resp.json::<GetTickerJsonData>().await.unwrap(),
-    Err(_) => return Err(PriceError::BadRequest),
-  };
+    let url = match reqwest::Url::parse_with_params(&url, &params) {
+      Ok(url) => url,
+      Err(_) => return Err(PriceError::InvalidURLParams),
+    };
 
-  Ok(resp.data)
+    let client = reqwest::Client::new()
+      .get(url)
+      .header("Accept", "application/json");
+
+    let resp = match client.send().await {
+      Ok(resp) => resp.json::<ConvertCurrencyJsonData>().await.unwrap(),
+      Err(_) => return Err(PriceError::BadRequest),
+    };
+
+    Ok(resp.data)
+  }
+
+  #[tokio::main]
+  pub async fn get_ticker(
+    &self,
+    GetTickerParams { symbol }: GetTickerParams,
+  ) -> Result<GetTickerReturn> {
+    let url = format!("{}/ticker", self.base_url);
+    let params = [("symbol", symbol.to_string())];
+
+    let url = match reqwest::Url::parse_with_params(&url, &params) {
+      Ok(url) => url,
+      Err(_) => return Err(PriceError::InvalidURLParams),
+    };
+
+    let client = reqwest::Client::new()
+      .get(url)
+      .header("Accept", "application/json");
+
+    let resp = match client.send().await {
+      Ok(resp) => resp.json::<GetTickerJsonData>().await.unwrap(),
+      Err(_) => return Err(PriceError::BadRequest),
+    };
+
+    Ok(resp.data)
+  }
+
+  #[tokio::main]
+  pub async fn get_tickers(
+    &self,
+    GetTickerParams { symbol }: GetTickerParams,
+  ) -> Result<GetTickersReturn> {
+    let url = format!("{}/tickers", self.base_url);
+    let params = [("symbol", symbol.to_string())];
+
+    let url = match reqwest::Url::parse_with_params(&url, &params) {
+      Ok(url) => url,
+      Err(_) => return Err(PriceError::InvalidURLParams),
+    };
+
+    let client = reqwest::Client::new()
+      .get(url)
+      .header("Accept", "application/json");
+
+    let resp = match client.send().await {
+      Ok(resp) => resp.json::<GetTickersJsonData>().await.unwrap(),
+      Err(_) => return Err(PriceError::BadRequest),
+    };
+
+    Ok(resp.data)
+  }
 }
 
-#[tokio::main]
-pub async fn get_tickers(GetTickerParams { symbol }: GetTickerParams) -> Result<GetTickersReturn> {
-  let url = format!("{}/tickers", BASE_URL);
-  let params = [("symbol", symbol.to_string())];
 
-  let url = match reqwest::Url::parse_with_params(&url, &params) {
-    Ok(url) => url,
-    Err(_) => return Err(PriceError::InvalidURLParams),
-  };
+pub fn set_base_url(url: String) {
+  let mut currency_converter = PRICES.write().unwrap();
+  currency_converter.set_base_url(url);
+}
 
-  let client = reqwest::Client::new()
-    .get(url)
-    .header("Accept", "application/json");
+pub fn convert_currency(params: ConvertCurrencyParams)-> Result<ConvertCurrencyReturn> {
+  let prices = PRICES.read().unwrap();
+  prices.convert_currency(params)
+}
 
-  let resp = match client.send().await {
-    Ok(resp) => resp.json::<GetTickersJsonData>().await.unwrap(),
-    Err(_) => return Err(PriceError::BadRequest),
-  };
+pub fn get_ticker(params: GetTickerParams)-> Result<GetTickerReturn> {
+  let prices = PRICES.read().unwrap();
+  prices.get_ticker(params)
+}
 
-  Ok(resp.data)
+pub fn get_tickers(params: GetTickerParams)-> Result<GetTickersReturn> {
+  let prices = PRICES.read().unwrap();
+  prices.get_tickers(params)
 }
