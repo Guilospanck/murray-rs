@@ -54,15 +54,9 @@ impl Blockchain {
 
     let mut params = vec![];
 
-    match hash {
-        Some(s) => params.push(("hash", s)),
-        None => ()
-    };
+    if let Some(s) = hash { params.push(("hash", s)) }
 
-    match height {
-        Some(s) => params.push(("height", s.to_string())),
-        None => ()
-    };
+    if let Some(s) = height { params.push(("height", s.to_string())) }
 
     let url = match reqwest::Url::parse_with_params(&url, &params) {
       Ok(url) => url,

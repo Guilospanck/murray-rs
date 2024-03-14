@@ -1,3 +1,4 @@
+#![allow(unused_doc_comments)]
 use murray_rs::{
   blockchain::{self, types::GetBlockParams},
   // prices::{
