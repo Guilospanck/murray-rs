@@ -1,9 +1,9 @@
 pub mod types;
 use std::result;
 
-use reqwest;
-use std::sync::{Arc, RwLock};
 use lazy_static;
+use reqwest::{self, Client};
+use std::sync::{Arc, RwLock};
 
 use self::types::{
   ConvertCurrencyJsonData, ConvertCurrencyParams, ConvertCurrencyReturn, GetTickerJsonData,
@@ -28,12 +28,17 @@ pub enum PriceError {
 type Result<T> = result::Result<T, PriceError>;
 
 struct Prices {
-  pub base_url: String,
+  base_url: String,
+  client: Client,
 }
 
 impl Prices {
   pub fn new(url: String) -> Self {
-    Self { base_url: url }
+    let client = reqwest::Client::new();
+    Self {
+      base_url: url,
+      client,
+    }
   }
 
   pub fn set_base_url(&mut self, base_url: String) {
@@ -56,9 +61,7 @@ impl Prices {
       Err(_) => return Err(PriceError::InvalidURLParams),
     };
 
-    let client = reqwest::Client::new()
-      .get(url)
-      .header("Accept", "application/json");
+    let client = self.client.get(url).header("Accept", "application/json");
 
     let resp = match client.send().await {
       Ok(resp) => resp.json::<ConvertCurrencyJsonData>().await.unwrap(),
@@ -81,9 +84,7 @@ impl Prices {
       Err(_) => return Err(PriceError::InvalidURLParams),
     };
 
-    let client = reqwest::Client::new()
-      .get(url)
-      .header("Accept", "application/json");
+    let client = self.client.get(url).header("Accept", "application/json");
 
     let resp = match client.send().await {
       Ok(resp) => resp.json::<GetTickerJsonData>().await.unwrap(),
@@ -106,9 +107,7 @@ impl Prices {
       Err(_) => return Err(PriceError::InvalidURLParams),
     };
 
-    let client = reqwest::Client::new()
-      .get(url)
-      .header("Accept", "application/json");
+    let client = self.client.get(url).header("Accept", "application/json");
 
     let resp = match client.send().await {
       Ok(resp) => resp.json::<GetTickersJsonData>().await.unwrap(),
@@ -119,23 +118,22 @@ impl Prices {
   }
 }
 
-
 pub fn set_base_url(url: String) {
   let mut prices = PRICES.write().unwrap();
   prices.set_base_url(url);
 }
 
-pub fn convert_currency(params: ConvertCurrencyParams)-> Result<ConvertCurrencyReturn> {
+pub fn convert_currency(params: ConvertCurrencyParams) -> Result<ConvertCurrencyReturn> {
   let prices = PRICES.read().unwrap();
   prices.convert_currency(params)
 }
 
-pub fn get_ticker(params: GetTickerParams)-> Result<GetTickerReturn> {
+pub fn get_ticker(params: GetTickerParams) -> Result<GetTickerReturn> {
   let prices = PRICES.read().unwrap();
   prices.get_ticker(params)
 }
 
-pub fn get_tickers(params: GetTickerParams)-> Result<GetTickersReturn> {
+pub fn get_tickers(params: GetTickerParams) -> Result<GetTickersReturn> {
   let prices = PRICES.read().unwrap();
   prices.get_tickers(params)
 }
