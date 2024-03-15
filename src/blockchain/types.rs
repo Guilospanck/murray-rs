@@ -88,6 +88,17 @@ pub struct GetFeesRecommendedResponse {
   pub minimum_fee: u64,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct GetFeesMempoolBlocksResponse {
+  pub block_size: u32,
+  pub block_v_size: f32,
+  pub n_tx: u32,
+  pub total_fees: u64,
+  pub median_fee: f64,
+  pub fee_range: Vec<f64>,
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct GetBlockResponseJsonData {
   pub data: GetBlockResponse,
@@ -101,4 +112,9 @@ pub struct GetBlock2TimeResponseJsonData {
 #[derive(Deserialize, Serialize)]
 pub struct GetFeesRecommendedResponseJsonData {
   pub data: GetFeesRecommendedResponse,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct GetFeesMempoolBlocksResponseJsonData {
+  pub data: Vec<GetFeesMempoolBlocksResponse>,
 }

@@ -5,7 +5,7 @@ use lazy_static;
 use reqwest::{self, Client};
 use std::sync::{Arc, RwLock};
 
-use self::types::{GetBlock2TimeResponse, GetBlock2TimeResponseJsonData, GetBlockParams, GetBlockResponse, GetBlockResponseJsonData, GetFeesRecommendedResponse, GetFeesRecommendedResponseJsonData};
+use self::types::{GetBlock2TimeResponse, GetBlock2TimeResponseJsonData, GetBlockParams, GetBlockResponse, GetBlockResponseJsonData, GetFeesMempoolBlocksResponse, GetFeesMempoolBlocksResponseJsonData, GetFeesRecommendedResponse, GetFeesRecommendedResponseJsonData};
 
 
 const BASE_URL: &str = "http://blockchain.murrayrothbot.com";
@@ -126,6 +126,25 @@ impl Blockchain {
     Ok(resp)
   }
 
+  #[tokio::main]
+  pub async fn get_fees_mempool_blocks(
+    &self,
+  ) -> Result<Vec<GetFeesMempoolBlocksResponse>> {
+    let url = format!("{}/fees/mempool-blocks", self.base_url);
+
+    let client = self.client.get(url).header("Accept", "application/json");
+
+    let resp = match client.send().await {
+      Ok(resp) => match resp.json::<GetFeesMempoolBlocksResponseJsonData>().await {
+        Ok(r) => r.data,
+        Err(e) => return Err(PriceError::JSONParseError(e.to_string()))
+      },
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    Ok(resp)
+  }
+
  
 }
 
@@ -147,5 +166,10 @@ pub fn get_block2time(params: GetBlockParams) -> Result<GetBlock2TimeResponse> {
 pub fn get_fees_recommended() -> Result<GetFeesRecommendedResponse> {
   let blockchain = BLOCKCHAIN.read().unwrap();
   blockchain.get_fees_recommended()
+}
+
+pub fn get_fees_mempool_blocks() -> Result<Vec<GetFeesMempoolBlocksResponse>> {
+  let blockchain = BLOCKCHAIN.read().unwrap();
+  blockchain.get_fees_mempool_blocks()
 }
 

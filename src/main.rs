@@ -33,6 +33,9 @@ fn main() {
   // });
   // println!("{:?}", b.unwrap());
 
-  let c = blockchain::get_fees_recommended();
-  println!("{:?}", c.unwrap());
+  // let c = blockchain::get_fees_recommended();
+  // println!("{:?}", c.unwrap());
+
+  let d = blockchain::get_fees_mempool_blocks();
+  println!("{:?}", d.unwrap());
 }
