@@ -21,9 +21,15 @@ fn main() {
 
   /** Blockchain */
   blockchain::set_base_url("http://localhost:3000".to_string());
-  let a = blockchain::get_block(GetBlockParams {
+  // let a = blockchain::get_block(GetBlockParams {
+  //   hash: None,
+  //   height: None,
+  // });
+  // println!("{:?}", a.unwrap());
+
+  let b = blockchain::get_block2time(GetBlockParams {
     hash: None,
-    height: None,
+    height: Some(500000),
   });
-  println!("{:?}", a.unwrap());
+  println!("{:?}", b.unwrap());
 }

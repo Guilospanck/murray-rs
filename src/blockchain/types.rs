@@ -73,7 +73,20 @@ pub struct GetBlockResponse {
   pub extras: Extras
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetBlock2TimeResponse {
+  pub timestamp: u64,
+  pub height: u32,
+  pub in_future: bool
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct GetBlockResponseJsonData {
   pub data: GetBlockResponse
+}
+
+
+#[derive(Deserialize, Serialize)]
+pub struct GetBlock2TimeResponseJsonData {
+  pub data: GetBlock2TimeResponse
 }

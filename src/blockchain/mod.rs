@@ -5,7 +5,7 @@ use lazy_static;
 use reqwest::{self, Client};
 use std::sync::{Arc, RwLock};
 
-use self::types::{GetBlockParams, GetBlockResponse, GetBlockResponseJsonData};
+use self::types::{GetBlock2TimeResponse, GetBlock2TimeResponseJsonData, GetBlockParams, GetBlockResponse, GetBlockResponseJsonData};
 
 
 const BASE_URL: &str = "http://blockchain.murrayrothbot.com";
@@ -76,6 +76,37 @@ impl Blockchain {
     Ok(resp)
   }
 
+  #[tokio::main]
+  pub async fn get_block2time(
+    &self,
+    GetBlockParams { hash, height }: GetBlockParams,
+  ) -> Result<GetBlock2TimeResponse> {
+    let url = format!("{}/block2time", self.base_url);
+
+    let mut params = vec![];
+
+    if let Some(s) = hash { params.push(("hash", s)) }
+
+    if let Some(s) = height { params.push(("height", s.to_string())) }
+
+    let url = match reqwest::Url::parse_with_params(&url, &params) {
+      Ok(url) => url,
+      Err(e) => return Err(PriceError::InvalidURLParams(e.to_string())),
+    };
+
+    let client = self.client.get(url).header("Accept", "application/json");
+
+    let resp = match client.send().await {
+      Ok(resp) => match resp.json::<GetBlock2TimeResponseJsonData>().await {
+        Ok(r) => r.data,
+        Err(e) => return Err(PriceError::JSONParseError(e.to_string()))
+      },
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    Ok(resp)
+  }
+
  
 }
 
@@ -87,5 +118,10 @@ pub fn set_base_url(url: String) {
 pub fn get_block(params: GetBlockParams) -> Result<GetBlockResponse> {
   let blockchain = BLOCKCHAIN.read().unwrap();
   blockchain.get_block(params)
+}
+
+pub fn get_block2time(params: GetBlockParams) -> Result<GetBlock2TimeResponse> {
+  let blockchain = BLOCKCHAIN.read().unwrap();
+  blockchain.get_block2time(params)
 }
 
