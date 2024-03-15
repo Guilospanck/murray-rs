@@ -1,11 +1,5 @@
 #![allow(unused_doc_comments)]
-use murray_rs::{
-  blockchain::{self, types::GetBlockParams},
-  // prices::{
-  //   self,
-  //   types::{ConvertCurrencyParams, Currency, GetTickerParams, Symbol},
-  // },
-};
+use murray_rs::blockchain::{self, types::{GetAddressParams, GetBlockParams}};
 
 fn main() {
   /** Prices
@@ -36,6 +30,9 @@ fn main() {
   // let c = blockchain::get_fees_recommended();
   // println!("{:?}", c.unwrap());
 
-  let d = blockchain::get_fees_mempool_blocks();
-  println!("{:?}", d.unwrap());
+  // let d = blockchain::get_fees_mempool_blocks();
+  // println!("{:?}", d.unwrap());
+
+  let e = blockchain::get_address_details(GetAddressParams {address: "1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX".to_string()});
+  println!("{:?}", e.unwrap());
 }
