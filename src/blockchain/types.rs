@@ -5,12 +5,11 @@ pub struct GetBlockParams {
   pub height: Option<u32>,
 }
 
-
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Pool {
   pub id: u64,
   pub name: String,
-  pub slug: String
+  pub slug: String,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -48,7 +47,6 @@ pub struct Extras {
   pub virtual_size: Option<f64>,
 }
 
-
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Block {
   pub id: String,
@@ -70,23 +68,37 @@ pub struct Block {
 pub struct GetBlockResponse {
   #[serde(flatten)]
   pub block: Block,
-  pub extras: Extras
+  pub extras: Extras,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct GetBlock2TimeResponse {
   pub timestamp: u64,
   pub height: u32,
-  pub in_future: bool
+  pub in_future: bool,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct GetFeesRecommendedResponse {
+  pub fastest_fee: u64,
+  pub half_hour_fee: u64,
+  pub hour_fee: u64,
+  pub economy_fee: u64,
+  pub minimum_fee: u64,
 }
 
 #[derive(Deserialize, Serialize)]
 pub struct GetBlockResponseJsonData {
-  pub data: GetBlockResponse
+  pub data: GetBlockResponse,
 }
-
 
 #[derive(Deserialize, Serialize)]
 pub struct GetBlock2TimeResponseJsonData {
-  pub data: GetBlock2TimeResponse
+  pub data: GetBlock2TimeResponse,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct GetFeesRecommendedResponseJsonData {
+  pub data: GetFeesRecommendedResponse,
 }

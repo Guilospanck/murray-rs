@@ -27,9 +27,12 @@ fn main() {
   // });
   // println!("{:?}", a.unwrap());
 
-  let b = blockchain::get_block2time(GetBlockParams {
-    hash: None,
-    height: Some(500000),
-  });
-  println!("{:?}", b.unwrap());
+  // let b = blockchain::get_block2time(GetBlockParams {
+  //   hash: None,
+  //   height: Some(500000),
+  // });
+  // println!("{:?}", b.unwrap());
+
+  let c = blockchain::get_fees_recommended();
+  println!("{:?}", c.unwrap());
 }
