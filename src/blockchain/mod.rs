@@ -676,5 +676,82 @@ mod tests {
       .unwrap();
   }
 
+  /// GET FEES RECOMMENDED
+  #[test]
+  fn get_fees_recommended_should_return_successfully() {
+    // arrange
+    let expected_response = json!({
+      "fastestFee": 1,
+      "halfHourFee": 2,
+      "hourFee": 3,
+      "economyFee": 4,
+      "minimumFee": 5
+    });
+    let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+    let sut = Sut::new();
+    let (mock, blockchain) = sut.from("/fees/recommended", 200, Method::GET, &body);
+
+    // act
+    let response = blockchain
+      .get_fees_recommended()
+      .unwrap();
+
+    // assert
+    mock.assert();
+    assert_eq!(response.fees_recommended.fastest_fee, expected_response["fastestFee"]);
+  }
+
+  #[test]
+  fn get_fees_recommended_should_return_successfully_when_no_params() {
+    // arrange
+    let expected_response = json!({
+      "fastestFee": 1,
+      "halfHourFee": 2,
+      "hourFee": 3,
+      "economyFee": 4,
+      "minimumFee": 5
+    });
+    let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+    let sut = Sut::new();
+    let (mock, blockchain) = sut.from("/fees/recommended", 200, Method::GET, &body);
+
+    // act
+    let response = blockchain
+      .get_fees_recommended()
+      .unwrap();
+
+    // assert
+    mock.assert();
+    assert_eq!(response.fees_recommended.fastest_fee, expected_response["fastestFee"]);
+  }
+
+  #[test]
+  #[should_panic]
+  fn get_fees_recommended_should_return_error_when_problem_with_server() {
+    // arrange
+    let body = "".to_string();
+    let sut = Sut::new();
+    let (_mock, blockchain) = sut.from("/fees/recommended", 400, Method::GET, &body);
+
+    // act
+    let _response = blockchain
+      .get_fees_recommended()
+      .unwrap();
+  }
+
+  #[test]
+  #[should_panic]
+  fn get_fees_recommended_should_return_error_when_body_returns_wrong_json() {
+    // arrange
+    let body = "wrong-return".to_string();
+    let sut = Sut::new();
+    let (_mock, blockchain) = sut.from("/fees/recommended", 200, Method::GET, &body);
+
+    // act
+    let _response = blockchain
+      .get_fees_recommended()
+      .unwrap();
+  }
+
 
 }
