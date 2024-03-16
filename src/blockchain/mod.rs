@@ -14,6 +14,7 @@ use self::types::{
   GetFeesRecommendedResponseJsonData, GetHashrateResponse, GetHashrateResponseJsonData,
   GetHealthResponse, GetHealthResponseJsonData, GetMempoolResponse, GetMempoolResponseJsonData,
   GetTransactionParams, GetTransactionResponse, GetTransactionResponseJsonData,
+  PostTransactionParams, PostTransactionResponse, PostTransactionResponseJsonData,
 };
 
 const BASE_URL: &str = "http://blockchain.murrayrothbot.com";
@@ -29,6 +30,8 @@ pub enum PriceError {
   InvalidURLParams(String),
   #[error("Bad request: `{0}`")]
   BadRequest(String),
+  #[error("API error: `{0}`")]
+  APIError(String),
   #[error("JSON parse error: `{0}`")]
   JSONParseError(String),
 }
@@ -77,15 +80,20 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetBlockResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
     };
 
-    Ok(resp)
+    Ok(data)
   }
 
   #[tokio::main]
@@ -112,15 +120,20 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetBlock2TimeResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
     };
 
-    Ok(resp)
+    Ok(data)
   }
 
   #[tokio::main]
@@ -129,15 +142,20 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetFeesRecommendedResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
     };
 
-    Ok(resp)
+    Ok(data)
   }
 
   #[tokio::main]
@@ -146,15 +164,20 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetFeesMempoolBlocksResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
     };
 
-    Ok(resp)
+    Ok(data)
   }
 
   #[tokio::main]
@@ -166,15 +189,20 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetAddressDetailsResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
     };
 
-    Ok(resp)
+    Ok(data)
   }
 
   #[tokio::main]
@@ -186,15 +214,20 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetAddressTransactionsResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
     };
 
-    Ok(resp)
+    Ok(data)
   }
 
   #[tokio::main]
@@ -206,7 +239,12 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetAddressUTXOResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
@@ -214,7 +252,7 @@ impl Blockchain {
       Err(e) => return Err(PriceError::BadRequest(e.to_string())),
     };
 
-    Ok(resp)
+    Ok(data)
   }
 
   #[tokio::main]
@@ -223,15 +261,20 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetHashrateResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
     };
 
-    Ok(resp)
+    Ok(data)
   }
 
   #[tokio::main]
@@ -240,15 +283,20 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetHealthResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
     };
 
-    Ok(resp)
+    Ok(data)
   }
 
   #[tokio::main]
@@ -257,15 +305,20 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetMempoolResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
     };
 
-    Ok(resp)
+    Ok(data)
   }
 
   #[tokio::main]
@@ -277,15 +330,51 @@ impl Blockchain {
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
       Ok(resp) => match resp.json::<GetTransactionResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
       },
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
+    };
+
+    Ok(data)
+  }
+
+  #[tokio::main]
+  pub async fn post_transaction(
+    &self,
+    PostTransactionParams { tx_hex }: PostTransactionParams,
+  ) -> Result<PostTransactionResponse> {
+    let url = format!("{}/tx", self.base_url);
+
+    let json_data = format!(r#"{{"txHex":"{}"}}"#, tx_hex);
+
+    let client = self
+      .client
+      .post(url)
+      .header("Accept", "application/json")
+      .body(json_data);
+
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
       Err(e) => return Err(PriceError::BadRequest(e.to_string())),
     };
 
-    Ok(resp)
+    let data = match server_response {
+      Ok(res) => match res.json::<PostTransactionResponseJsonData>().await {
+        Ok(r) => r.data,
+        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+      },
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
+    };
+
+    Ok(data)
   }
 }
 
@@ -349,4 +438,9 @@ pub fn get_mempool() -> Result<GetMempoolResponse> {
 pub fn get_transaction(params: GetTransactionParams) -> Result<GetTransactionResponse> {
   let blockchain = BLOCKCHAIN.read().unwrap();
   blockchain.get_transaction(params)
+}
+
+pub fn post_transaction(params: PostTransactionParams) -> Result<PostTransactionResponse> {
+  let blockchain = BLOCKCHAIN.read().unwrap();
+  blockchain.post_transaction(params)
 }
