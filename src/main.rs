@@ -1,9 +1,12 @@
 #![allow(unused_doc_comments)]
-use murray_rs::blockchain::{self, types::{GetAddressParams, GetBlockParams}};
+use murray_rs::blockchain::{
+  self,
+  types::{GetAddressParams, GetBlockParams, GetTransactionParams},
+};
 
 fn main() {
   /** Prices
-   * 
+   *
     prices::set_base_url("http://localhost:3000".to_string());
     let a = prices::convert_currency(ConvertCurrencyParams { currency: Currency::BRL, value: 100 });
     println!("{:?}", a.unwrap());
@@ -48,6 +51,10 @@ fn main() {
   // let i = blockchain::get_health();
   // println!("{:?}\n", i.unwrap());
 
-  let j = blockchain::get_mempool();
-  println!("{:?}\n", j.unwrap());
+  // let j = blockchain::get_mempool();
+  // println!("{:?}\n", j.unwrap());
+  let k = blockchain::get_transaction(GetTransactionParams {
+    txid: "15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521".to_string(),
+  });
+  println!("{:?}\n", k.unwrap());
 }

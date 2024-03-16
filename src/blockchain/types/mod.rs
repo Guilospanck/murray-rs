@@ -17,6 +17,10 @@ pub struct GetAddressParams {
   pub address: String,
 }
 
+pub struct GetTransactionParams {
+  pub txid: String,
+}
+
 #[derive(Deserialize, Serialize, Debug)]
 pub struct GetBlockResponse {
   #[serde(flatten)]
@@ -79,6 +83,12 @@ pub struct GetMempoolResponse {
   pub mempool_response: MempoolData
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetTransactionResponse {
+  #[serde(flatten)]
+  pub transaction: Transaction
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct GetBlockResponseJsonData {
   pub data: GetBlockResponse,
@@ -127,4 +137,9 @@ pub struct GetHealthResponseJsonData {
 #[derive(Deserialize, Serialize)]
 pub struct GetMempoolResponseJsonData {
   pub data: GetMempoolResponse,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct GetTransactionResponseJsonData {
+  pub data: GetTransactionResponse,
 }
