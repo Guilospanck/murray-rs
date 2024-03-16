@@ -692,13 +692,14 @@ mod tests {
     let (mock, blockchain) = sut.from("/fees/recommended", 200, Method::GET, &body);
 
     // act
-    let response = blockchain
-      .get_fees_recommended()
-      .unwrap();
+    let response = blockchain.get_fees_recommended().unwrap();
 
     // assert
     mock.assert();
-    assert_eq!(response.fees_recommended.fastest_fee, expected_response["fastestFee"]);
+    assert_eq!(
+      response.fees_recommended.fastest_fee,
+      expected_response["fastestFee"]
+    );
   }
 
   #[test]
@@ -716,13 +717,14 @@ mod tests {
     let (mock, blockchain) = sut.from("/fees/recommended", 200, Method::GET, &body);
 
     // act
-    let response = blockchain
-      .get_fees_recommended()
-      .unwrap();
+    let response = blockchain.get_fees_recommended().unwrap();
 
     // assert
     mock.assert();
-    assert_eq!(response.fees_recommended.fastest_fee, expected_response["fastestFee"]);
+    assert_eq!(
+      response.fees_recommended.fastest_fee,
+      expected_response["fastestFee"]
+    );
   }
 
   #[test]
@@ -734,9 +736,7 @@ mod tests {
     let (_mock, blockchain) = sut.from("/fees/recommended", 400, Method::GET, &body);
 
     // act
-    let _response = blockchain
-      .get_fees_recommended()
-      .unwrap();
+    let _response = blockchain.get_fees_recommended().unwrap();
   }
 
   #[test]
@@ -748,10 +748,105 @@ mod tests {
     let (_mock, blockchain) = sut.from("/fees/recommended", 200, Method::GET, &body);
 
     // act
-    let _response = blockchain
-      .get_fees_recommended()
-      .unwrap();
+    let _response = blockchain.get_fees_recommended().unwrap();
   }
 
+  /// GET FEES MEMPOOL BLOCKS
+  #[test]
+  fn get_fees_mempool_blocks_should_return_successfully() {
+    // arrange
+    let expected_response = json!([
+      {
+        "blockSize": 873046,
+        "blockVSize": 746096.5,
+        "nTx": 863,
+        "totalFees": 8875608,
+        "medianFee": 10.79646017699115,
+        "feeRange": [
+          1,
+          2.4242424242424243,
+          8.107816711590296,
+          10.148014440433213,
+          11.053311793214863,
+          12.041811846689896,
+          14.930957683741648,
+          302.11480362537765
+        ]
+      }
+    ]);
+    let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+    let sut = Sut::new();
+    let (mock, blockchain) = sut.from("/fees/mempool-blocks", 200, Method::GET, &body);
 
+    // act
+    let response = blockchain.get_fees_mempool_blocks().unwrap();
+
+    // assert
+    mock.assert();
+    assert_eq!(
+      response[0].fees_mempool_blocks.total_fees,
+      expected_response[0]["totalFees"]
+    );
+  }
+
+  #[test]
+  fn get_fees_mempool_blocks_should_return_successfully_when_no_params() {
+    // arrange
+    let expected_response = json!([
+      {
+        "blockSize": 873046,
+        "blockVSize": 746096.5,
+        "nTx": 863,
+        "totalFees": 8875608,
+        "medianFee": 10.79646017699115,
+        "feeRange": [
+          1,
+          2.4242424242424243,
+          8.107816711590296,
+          10.148014440433213,
+          11.053311793214863,
+          12.041811846689896,
+          14.930957683741648,
+          302.11480362537765
+        ]
+      }
+    ]);
+    let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+    let sut = Sut::new();
+    let (mock, blockchain) = sut.from("/fees/mempool-blocks", 200, Method::GET, &body);
+
+    // act
+    let response = blockchain.get_fees_mempool_blocks().unwrap();
+
+    // assert
+    mock.assert();
+    assert_eq!(
+      response[0].fees_mempool_blocks.total_fees,
+      expected_response[0]["totalFees"]
+    );
+  }
+
+  #[test]
+  #[should_panic]
+  fn get_fees_mempool_blocks_should_return_error_when_problem_with_server() {
+    // arrange
+    let body = "".to_string();
+    let sut = Sut::new();
+    let (_mock, blockchain) = sut.from("/fees/mempool-blocks", 400, Method::GET, &body);
+
+    // act
+    let _response = blockchain.get_fees_mempool_blocks().unwrap();
+  }
+
+  #[test]
+  #[should_panic]
+  fn get_fees_mempool_blocks_should_return_error_when_body_returns_wrong_json() {
+    // arrange
+    let body = "wrong-return".to_string();
+    let sut = Sut::new();
+    let (_mock, blockchain) = sut.from("/fees/mempool-blocks", 200, Method::GET, &body);
+
+    // act
+    let _response = blockchain.get_fees_mempool_blocks().unwrap();
+  }
 }
