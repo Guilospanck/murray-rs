@@ -45,6 +45,9 @@ fn main() {
   // let h = blockchain::get_hashrate();
   // println!("{:?}\n", h.unwrap());
 
-  let i = blockchain::get_health();
-  println!("{:?}\n", i.unwrap());
+  // let i = blockchain::get_health();
+  // println!("{:?}\n", i.unwrap());
+
+  let j = blockchain::get_mempool();
+  println!("{:?}\n", j.unwrap());
 }

@@ -20,3 +20,17 @@ pub struct FeesMempoolBlocks {
   pub median_fee: f64,
   pub fee_range: Vec<f64>,
 }
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct FeeHistogramEntry {
+pub fee_rate: f64,
+pub vsize: u64,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct MempoolData {
+pub count: u64,
+pub vsize: u64,
+pub total_fee: f64,
+pub fee_histogram: Vec<FeeHistogramEntry>,
+}

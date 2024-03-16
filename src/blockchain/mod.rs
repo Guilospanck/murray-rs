@@ -11,7 +11,7 @@ use self::types::{
   GetAddressUTXOResponseJsonData, GetBlock2TimeResponse, GetBlock2TimeResponseJsonData,
   GetBlockParams, GetBlockResponse, GetBlockResponseJsonData, GetFeesMempoolBlocksResponse,
   GetFeesMempoolBlocksResponseJsonData, GetFeesRecommendedResponse,
-  GetFeesRecommendedResponseJsonData, GetHashrateResponse, GetHashrateResponseJsonData, GetHealthResponse, GetHealthResponseJsonData,
+  GetFeesRecommendedResponseJsonData, GetHashrateResponse, GetHashrateResponseJsonData, GetHealthResponse, GetHealthResponseJsonData, GetMempoolResponse, GetMempoolResponseJsonData,
 };
 
 const BASE_URL: &str = "http://blockchain.murrayrothbot.com";
@@ -248,6 +248,23 @@ impl Blockchain {
 
     Ok(resp)
   }
+
+  #[tokio::main]
+  pub async fn get_mempool(&self) -> Result<GetMempoolResponse> {
+    let url = format!("{}/mempool", self.base_url);
+
+    let client = self.client.get(url).header("Accept", "application/json");
+
+    let resp = match client.send().await {
+      Ok(resp) => match resp.json::<GetMempoolResponseJsonData>().await {
+        Ok(r) => r.data,
+        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+      },
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    Ok(resp)
+  }
 }
 
 pub fn set_base_url(url: String) {
@@ -300,4 +317,9 @@ pub fn get_hashrate() -> Result<GetHashrateResponse> {
 pub fn get_health() -> Result<GetHealthResponse> {
   let blockchain = BLOCKCHAIN.read().unwrap();
   blockchain.get_health()
+}
+
+pub fn get_mempool() -> Result<GetMempoolResponse> {
+  let blockchain = BLOCKCHAIN.read().unwrap();
+  blockchain.get_mempool()
 }

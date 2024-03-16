@@ -6,7 +6,7 @@ pub mod transaction;
 pub mod address;
 pub mod mining;
 
-use self::{address::AddressDetails, block::{Block, Block2Time, Extras}, fee::{FeesMempoolBlocks, FeesRecommended}, mining::HashrateData, transaction::{Transaction, TransactionStatus}};
+use self::{address::AddressDetails, block::{Block, Block2Time, Extras}, fee::{FeesMempoolBlocks, FeesRecommended, MempoolData}, mining::HashrateData, transaction::{Transaction, TransactionStatus}};
 
 pub struct GetBlockParams {
   pub hash: Option<String>,
@@ -73,6 +73,12 @@ pub struct GetHealthResponse {
   pub message: String
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetMempoolResponse {
+  #[serde(flatten)]
+  pub mempool_response: MempoolData
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct GetBlockResponseJsonData {
   pub data: GetBlockResponse,
@@ -116,4 +122,9 @@ pub struct GetHashrateResponseJsonData {
 #[derive(Deserialize, Serialize)]
 pub struct GetHealthResponseJsonData {
   pub data: GetHealthResponse,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct GetMempoolResponseJsonData {
+  pub data: GetMempoolResponse,
 }
