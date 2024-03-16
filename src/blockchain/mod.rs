@@ -486,6 +486,7 @@ mod tests {
     }
   }
 
+  /// GET BLOCK
   #[test]
   fn get_block_should_return_successfully() {
     // arrange
@@ -589,4 +590,91 @@ mod tests {
       })
       .unwrap();
   }
+
+  /// GET BLOCK2TIME
+  #[test]
+  fn get_block2time_should_return_successfully() {
+    // arrange
+    let expected_response = json!({
+      "height": 736941,
+      "timestamp": 1652891466,
+      "in_future": false,
+    });
+    let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+    let sut = Sut::new();
+    let (mock, blockchain) = sut.from("/block2time", 200, Method::GET, &body);
+
+    // act
+    let response = blockchain
+      .get_block2time(GetBlockParams {
+        hash: Some("some_value".to_string()),
+        height: Some(50000),
+      })
+      .unwrap();
+
+    // assert
+    mock.assert();
+    assert_eq!(response.block2time.height, expected_response["height"]);
+  }
+
+  #[test]
+  fn get_block2time_should_return_successfully_when_no_params() {
+    // arrange
+    let expected_response = json!({
+      "height": 736941,
+      "timestamp": 1652891466,
+      "in_future": false,
+    });
+    let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+    let sut = Sut::new();
+    let (mock, blockchain) = sut.from("/block2time", 200, Method::GET, &body);
+
+    // act
+    let response = blockchain
+      .get_block2time(GetBlockParams {
+        hash: None,
+        height: None,
+      })
+      .unwrap();
+
+    // assert
+    mock.assert();
+    assert_eq!(response.block2time.height, expected_response["height"]);
+  }
+
+  #[test]
+  #[should_panic]
+  fn get_block2time_should_return_error_when_problem_with_server() {
+    // arrange
+    let body = "".to_string();
+    let sut = Sut::new();
+    let (_mock, blockchain) = sut.from("/block2time", 400, Method::GET, &body);
+
+    // act
+    let _response = blockchain
+      .get_block2time(GetBlockParams {
+        hash: None,
+        height: None,
+      })
+      .unwrap();
+  }
+
+  #[test]
+  #[should_panic]
+  fn get_block2time_should_return_error_when_body_returns_wrong_json() {
+    // arrange
+    let body = "wrong-return".to_string();
+    let sut = Sut::new();
+    let (_mock, blockchain) = sut.from("/block2time", 200, Method::GET, &body);
+
+    // act
+    let _response = blockchain
+      .get_block2time(GetBlockParams {
+        hash: None,
+        height: None,
+      })
+      .unwrap();
+  }
+
+
 }
