@@ -36,6 +36,9 @@ fn main() {
   // let e = blockchain::get_address_details(GetAddressParams {address: "1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX".to_string()});
   // println!("{:?}\n", e.unwrap());
 
-  let f = blockchain::get_address_transactions(GetAddressParams {address: "3Brz916o2Ng2s6iYT9bgCpAxTRqd9b3GGW".to_string()});
-  println!("{:?}\n", f.unwrap());
+  // let f = blockchain::get_address_transactions(GetAddressParams {address: "3Brz916o2Ng2s6iYT9bgCpAxTRqd9b3GGW".to_string()});
+  // println!("{:?}\n", f.unwrap());
+
+  let g = blockchain::get_address_utxos(GetAddressParams {address: "3Brz916o2Ng2s6iYT9bgCpAxTRqd9b3GGW".to_string()});
+  println!("{:?}\n", g.unwrap());
 }

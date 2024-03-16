@@ -5,7 +5,7 @@ pub mod fee;
 pub mod transaction;
 pub mod address;
 
-use self::{address::AddressDetails, block::{Block, Block2Time, Extras}, fee::{FeesMempoolBlocks, FeesRecommended}, transaction::Transaction};
+use self::{address::AddressDetails, block::{Block, Block2Time, Extras}, fee::{FeesMempoolBlocks, FeesRecommended}, transaction::{Transaction, TransactionStatus}};
 
 pub struct GetBlockParams {
   pub hash: Option<String>,
@@ -53,6 +53,14 @@ pub struct GetAddressTransactionsResponse {
   pub address_transactions: Transaction
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetAddressUTXOResponse {
+  pub txid: String,
+  pub vout: u32,
+  pub status: TransactionStatus,
+  pub value: u64
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct GetBlockResponseJsonData {
   pub data: GetBlockResponse,
@@ -81,4 +89,9 @@ pub struct GetAddressDetailsResponseJsonData {
 #[derive(Deserialize, Serialize)]
 pub struct GetAddressTransactionsResponseJsonData {
   pub data: Vec<GetAddressTransactionsResponse>,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct GetAddressUTXOResponseJsonData {
+  pub data: Vec<GetAddressUTXOResponse>,
 }
