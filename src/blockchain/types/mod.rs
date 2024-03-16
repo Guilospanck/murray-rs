@@ -4,8 +4,9 @@ pub mod block;
 pub mod fee;
 pub mod transaction;
 pub mod address;
+pub mod mining;
 
-use self::{address::AddressDetails, block::{Block, Block2Time, Extras}, fee::{FeesMempoolBlocks, FeesRecommended}, transaction::{Transaction, TransactionStatus}};
+use self::{address::AddressDetails, block::{Block, Block2Time, Extras}, fee::{FeesMempoolBlocks, FeesRecommended}, mining::HashrateData, transaction::{Transaction, TransactionStatus}};
 
 pub struct GetBlockParams {
   pub hash: Option<String>,
@@ -61,6 +62,12 @@ pub struct GetAddressUTXOResponse {
   pub value: u64
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetHashrateResponse {
+  #[serde(flatten)]
+  pub hashrate: HashrateData
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct GetBlockResponseJsonData {
   pub data: GetBlockResponse,
@@ -94,4 +101,9 @@ pub struct GetAddressTransactionsResponseJsonData {
 #[derive(Deserialize, Serialize)]
 pub struct GetAddressUTXOResponseJsonData {
   pub data: Vec<GetAddressUTXOResponse>,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct GetHashrateResponseJsonData {
+  pub data: GetHashrateResponse,
 }

@@ -11,7 +11,7 @@ use self::types::{
   GetAddressUTXOResponseJsonData, GetBlock2TimeResponse, GetBlock2TimeResponseJsonData,
   GetBlockParams, GetBlockResponse, GetBlockResponseJsonData, GetFeesMempoolBlocksResponse,
   GetFeesMempoolBlocksResponseJsonData, GetFeesRecommendedResponse,
-  GetFeesRecommendedResponseJsonData,
+  GetFeesRecommendedResponseJsonData, GetHashrateResponse, GetHashrateResponseJsonData,
 };
 
 const BASE_URL: &str = "http://blockchain.murrayrothbot.com";
@@ -214,6 +214,23 @@ impl Blockchain {
 
     Ok(resp)
   }
+
+  #[tokio::main]
+  pub async fn get_hashrate(&self) -> Result<GetHashrateResponse> {
+    let url = format!("{}/hashrate", self.base_url);
+
+    let client = self.client.get(url).header("Accept", "application/json");
+
+    let resp = match client.send().await {
+      Ok(resp) => match resp.json::<GetHashrateResponseJsonData>().await {
+        Ok(r) => r.data,
+        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+      },
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    Ok(resp)
+  }
 }
 
 pub fn set_base_url(url: String) {
@@ -256,4 +273,9 @@ pub fn get_address_transactions(
 pub fn get_address_utxos(params: GetAddressParams) -> Result<Vec<GetAddressUTXOResponse>> {
   let blockchain = BLOCKCHAIN.read().unwrap();
   blockchain.get_address_utxos(params)
+}
+
+pub fn get_hashrate() -> Result<GetHashrateResponse> {
+  let blockchain = BLOCKCHAIN.read().unwrap();
+  blockchain.get_hashrate()
 }
