@@ -42,6 +42,9 @@ fn main() {
   // let g = blockchain::get_address_utxos(GetAddressParams {address: "3Brz916o2Ng2s6iYT9bgCpAxTRqd9b3GGW".to_string()});
   // println!("{:?}\n", g.unwrap());
 
-  let h = blockchain::get_hashrate();
-  println!("{:?}\n", h.unwrap());
+  // let h = blockchain::get_hashrate();
+  // println!("{:?}\n", h.unwrap());
+
+  let i = blockchain::get_health();
+  println!("{:?}\n", i.unwrap());
 }

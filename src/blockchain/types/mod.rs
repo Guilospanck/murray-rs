@@ -68,6 +68,11 @@ pub struct GetHashrateResponse {
   pub hashrate: HashrateData
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetHealthResponse {
+  pub message: String
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct GetBlockResponseJsonData {
   pub data: GetBlockResponse,
@@ -106,4 +111,9 @@ pub struct GetAddressUTXOResponseJsonData {
 #[derive(Deserialize, Serialize)]
 pub struct GetHashrateResponseJsonData {
   pub data: GetHashrateResponse,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct GetHealthResponseJsonData {
+  pub data: GetHealthResponse,
 }
