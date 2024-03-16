@@ -444,3 +444,149 @@ pub fn post_transaction(params: PostTransactionParams) -> Result<PostTransaction
   let blockchain = BLOCKCHAIN.read().unwrap();
   blockchain.post_transaction(params)
 }
+
+#[cfg(test)]
+mod tests {
+
+  use crate::blockchain::types::GetBlockParams;
+  use httpmock::{prelude::*, Method, Mock};
+  use serde::Serialize;
+  use serde_json::json;
+
+  use super::{
+    types::block::{self, Block},
+    Blockchain,
+  };
+
+  struct Sut {
+    server: MockServer,
+  }
+
+  impl Sut {
+    fn new() -> Self {
+      let server = MockServer::start();
+      Sut { server }
+    }
+
+    fn from(&self, path: &str, status: u16, method: Method, body: &str) -> (Mock, Blockchain) {
+      let url = self.server.base_url();
+
+      // Create a mock on the server.
+      let mock = self.server.mock(|when, then| {
+        when.method(method).path(path);
+        then
+          .status(status)
+          .header("content-type", "application/json")
+          .body(body);
+      });
+
+      let blockchain = Blockchain::new(url);
+
+      return (mock, blockchain);
+    }
+  }
+
+  #[test]
+  fn get_block_should_return_successfully() {
+    // arrange
+    let expected_response = json!({
+      "id": "00000000000000000007566f8f035a1dc38b351e6f54778b311fe6dbabd79b46",
+      "height": 736941,
+      "version": 536870916,
+      "timestamp": 1652891466,
+      "bits": 386466234,
+      "nonce": 3514220842u32,
+      "difficulty": 31251101365711.12,
+      "merkle_root": "4a3072f98f60cbb639bb7f46180b8843d17c7502627ffb633db0ed86610cdd71",
+      "tx_count": 2381,
+      "size": 1709571,
+      "weight": 3997770,
+      "previousblockhash": "00000000000000000005ef14db0b4befcbbe1e9b8676eec67fcf810a899c4d5e",
+      "extras": { "reward": 638307429, "coinbaseTx": { "vin": [ { "scriptsig": "03ad3e0b2cfabe6d6df8fb5429a5de5fc2bd1bafffbc90d33c77eb73307d51931d247f21d7bccde51710000000f09f909f092f4632506f6f6c2f6b0000000000000000000000000000000000000000000000000000000000000000000000050086411100" } ], "vout": [ { "scriptpubkey_address": "1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY", "value": 638307429 } ] }, "coinbaseRaw": "03ad3e0b2cfabe6d6df8fb5429a5de5fc2bd1bafffbc90d33c77eb73307d51931d247f21d7bccde51710000000f09f909f092f4632506f6f6c2f6b0000000000000000000000000000000000000000000000000000000000000000000000050086411100", "medianFee": 10, "feeRange": [ 1, 8, 9, 10, 15, 21, 348 ], "totalFees": 13307429, "avgFee": 5591, "avgFeeRate": 13, "pool": { "id": 36, "name": "F2Pool", "slug": "f2pool" }, "matchRate": 93 }
+    });
+    let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+    let sut = Sut::new();
+    let (mock, blockchain) = sut.from("/block", 200, Method::GET, &body);
+
+    // act
+    let response = blockchain
+      .get_block(GetBlockParams {
+        hash: Some("some_value".to_string()),
+        height: Some(50000),
+      })
+      .unwrap();
+
+    // assert
+    mock.assert();
+    assert_eq!(response.block.id, expected_response["id"]);
+  }
+
+  #[test]
+  fn get_block_should_return_successfully_when_no_params() {
+    // arrange
+    let expected_response = json!({
+      "id": "00000000000000000007566f8f035a1dc38b351e6f54778b311fe6dbabd79b46",
+      "height": 736941,
+      "version": 536870916,
+      "timestamp": 1652891466,
+      "bits": 386466234,
+      "nonce": 3514220842u32,
+      "difficulty": 31251101365711.12,
+      "merkle_root": "4a3072f98f60cbb639bb7f46180b8843d17c7502627ffb633db0ed86610cdd71",
+      "tx_count": 2381,
+      "size": 1709571,
+      "weight": 3997770,
+      "previousblockhash": "00000000000000000005ef14db0b4befcbbe1e9b8676eec67fcf810a899c4d5e",
+      "extras": { "reward": 638307429, "coinbaseTx": { "vin": [ { "scriptsig": "03ad3e0b2cfabe6d6df8fb5429a5de5fc2bd1bafffbc90d33c77eb73307d51931d247f21d7bccde51710000000f09f909f092f4632506f6f6c2f6b0000000000000000000000000000000000000000000000000000000000000000000000050086411100" } ], "vout": [ { "scriptpubkey_address": "1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY", "value": 638307429 } ] }, "coinbaseRaw": "03ad3e0b2cfabe6d6df8fb5429a5de5fc2bd1bafffbc90d33c77eb73307d51931d247f21d7bccde51710000000f09f909f092f4632506f6f6c2f6b0000000000000000000000000000000000000000000000000000000000000000000000050086411100", "medianFee": 10, "feeRange": [ 1, 8, 9, 10, 15, 21, 348 ], "totalFees": 13307429, "avgFee": 5591, "avgFeeRate": 13, "pool": { "id": 36, "name": "F2Pool", "slug": "f2pool" }, "matchRate": 93 }
+    });
+    let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+    let sut = Sut::new();
+    let (mock, blockchain) = sut.from("/block", 200, Method::GET, &body);
+
+    // act
+    let response = blockchain
+      .get_block(GetBlockParams {
+        hash: None,
+        height: None,
+      })
+      .unwrap();
+
+    // assert
+    mock.assert();
+    assert_eq!(response.block.id, expected_response["id"]);
+  }
+
+  #[test]
+  #[should_panic]
+  fn get_block_should_return_error_when_problem_with_server() {
+    // arrange
+    let body = "".to_string();
+    let sut = Sut::new();
+    let (_mock, blockchain) = sut.from("/block", 400, Method::GET, &body);
+
+    // act
+    let _response = blockchain
+      .get_block(GetBlockParams {
+        hash: None,
+        height: None,
+      })
+      .unwrap();
+  }
+
+  #[test]
+  #[should_panic]
+  fn get_block_should_return_error_when_body_returns_wrong_json() {
+    // arrange
+    let body = "wrong-return".to_string();
+    let sut = Sut::new();
+    let (_mock, blockchain) = sut.from("/block", 200, Method::GET, &body);
+
+    // act
+    let _response = blockchain
+      .get_block(GetBlockParams {
+        hash: None,
+        height: None,
+      })
+      .unwrap();
+  }
+}
