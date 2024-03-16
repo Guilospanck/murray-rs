@@ -14,25 +14,28 @@ fn main() {
   */
 
   /** Blockchain */
-  blockchain::set_base_url("http://localhost:3000".to_string());
+  // blockchain::set_base_url("http://localhost:3000".to_string());
   // let a = blockchain::get_block(GetBlockParams {
   //   hash: None,
   //   height: None,
   // });
-  // println!("{:?}", a.unwrap());
+  // println!("{:?}\n", a.unwrap());
 
   // let b = blockchain::get_block2time(GetBlockParams {
   //   hash: None,
   //   height: Some(500000),
   // });
-  // println!("{:?}", b.unwrap());
+  // println!("{:?}\n", b.unwrap());
 
   // let c = blockchain::get_fees_recommended();
-  // println!("{:?}", c.unwrap());
+  // println!("{:?}\n", c.unwrap());
 
   // let d = blockchain::get_fees_mempool_blocks();
-  // println!("{:?}", d.unwrap());
+  // println!("{:?}\n", d.unwrap());
 
-  let e = blockchain::get_address_details(GetAddressParams {address: "1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX".to_string()});
-  println!("{:?}", e.unwrap());
+  // let e = blockchain::get_address_details(GetAddressParams {address: "1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX".to_string()});
+  // println!("{:?}\n", e.unwrap());
+
+  let f = blockchain::get_address_transactions(GetAddressParams {address: "3Brz916o2Ng2s6iYT9bgCpAxTRqd9b3GGW".to_string()});
+  println!("{:?}\n", f.unwrap());
 }

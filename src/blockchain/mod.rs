@@ -1,11 +1,11 @@
 pub mod types;
-use std::result;
+use std::{fs, result};
 
 use lazy_static;
 use reqwest::{self, Client};
 use std::sync::{Arc, RwLock};
 
-use self::types::{GetAddressDetailsResponse, GetAddressDetailsResponseJsonData, GetAddressParams, GetBlock2TimeResponse, GetBlock2TimeResponseJsonData, GetBlockParams, GetBlockResponse, GetBlockResponseJsonData, GetFeesMempoolBlocksResponse, GetFeesMempoolBlocksResponseJsonData, GetFeesRecommendedResponse, GetFeesRecommendedResponseJsonData};
+use self::types::{GetAddressDetailsResponse, GetAddressDetailsResponseJsonData, GetAddressParams, GetAddressTransactionsResponse, GetAddressTransactionsResponseJsonData, GetBlock2TimeResponse, GetBlock2TimeResponseJsonData, GetBlockParams, GetBlockResponse, GetBlockResponseJsonData, GetFeesMempoolBlocksResponse, GetFeesMempoolBlocksResponseJsonData, GetFeesRecommendedResponse, GetFeesRecommendedResponseJsonData};
 
 
 const BASE_URL: &str = "http://blockchain.murrayrothbot.com";
@@ -165,6 +165,26 @@ impl Blockchain {
     Ok(resp)
   }
 
+  #[tokio::main]
+  pub async fn get_address_transactions(
+    &self,
+    GetAddressParams { address }: GetAddressParams,
+  ) -> Result<Vec<GetAddressTransactionsResponse>> {
+    let url = format!("{}/address/{}/txs", self.base_url, address);
+
+    let client = self.client.get(url).header("Accept", "application/json");
+
+    let resp = match client.send().await {
+      Ok(resp) => match resp.json::<GetAddressTransactionsResponseJsonData>().await {
+        Ok(r) => r.data,
+        Err(e) => return Err(PriceError::JSONParseError(e.to_string()))
+      },
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+    };
+
+    Ok(resp)
+  }
+
  
 }
 
@@ -196,5 +216,10 @@ pub fn get_fees_mempool_blocks() -> Result<Vec<GetFeesMempoolBlocksResponse>> {
 pub fn get_address_details(params: GetAddressParams) -> Result<GetAddressDetailsResponse> {
   let blockchain = BLOCKCHAIN.read().unwrap();
   blockchain.get_address_details(params)
+}
+
+pub fn get_address_transactions(params: GetAddressParams) -> Result<Vec<GetAddressTransactionsResponse>> {
+  let blockchain = BLOCKCHAIN.read().unwrap();
+  blockchain.get_address_transactions(params)
 }
 
