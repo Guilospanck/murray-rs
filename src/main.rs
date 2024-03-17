@@ -24,8 +24,12 @@ fn main() {
   // });
   // println!("{:?}", a.unwrap());
 
-  let b = murray.lightning.get_statistics();
-  println!("{:?}", b.unwrap());
+  // let b = murray.lightning.get_statistics();
+  // println!("{:?}", b.unwrap());
+
+  let c = murray.lightning.get_top_nodes().unwrap();
+  let country = c.top_by_channels[0].country.as_ref().unwrap() ;
+  println!("{:?}", country.de);
 
   // Blockchain
   // murray.blockchain.set_base_url("http://localhost:3000".to_string());

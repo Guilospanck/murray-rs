@@ -1,0 +1,175 @@
+{
+  "topByCapacity": [
+    {
+      "publicKey": "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f",
+      "alias": "ACINQ",
+      "capacity": 48331266847
+    },
+    {
+      "publicKey": "03cde60a6323f7122d5178255766e38114b4722ede08f7c9e0c5df9b912cc201d6",
+      "alias": "bfx-lnd1",
+      "capacity": 41086928677
+    },
+    {
+      "publicKey": "0294ac3e099def03c12a37e30fe5364b1223fd60069869142ef96580c8439c2e0a",
+      "alias": "okx",
+      "capacity": 39439765469
+    },
+    {
+      "publicKey": "03a1f3afd646d77bdaf545cceaf079bab6057eae52c6319b63b5803d0989d6a72f",
+      "alias": "Binance",
+      "capacity": 27488995000
+    },
+    {
+      "publicKey": "02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69",
+      "alias": "Kraken 🐙⚡",
+      "capacity": 26811766381
+    },
+    {
+      "publicKey": "034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5",
+      "alias": "LNBϟG [Hub-1]",
+      "capacity": 25986167616
+    }
+  ],
+  "topByChannels": [
+    {
+      "publicKey": "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f",
+      "alias": "ACINQ",
+      "channels": 2674,
+      "city": null,
+      "country": {
+        "de": "Vereinigte Staaten",
+        "en": "United States",
+        "es": "Estados Unidos",
+        "fr": "États Unis",
+        "ja": "アメリカ",
+        "pt-BR": "EUA",
+        "ru": "США",
+        "zh-CN": "美国"
+      },
+      "iso_code": "US",
+      "subdivision": null
+    },
+    {
+      "publicKey": "0217890e3aad8d35bc054f43acc00084b25229ecff0ab68debd82883ad65ee8266",
+      "alias": "1ML.com node ALPHA",
+      "channels": 1784,
+      "city": {
+        "de": "New York City",
+        "en": "New York",
+        "es": "Nueva York",
+        "fr": "New York",
+        "ja": "ニューヨーク",
+        "pt-BR": "Nova Iorque",
+        "ru": "Нью-Йорк"
+      },
+      "country": {
+        "de": "Vereinigte Staaten",
+        "en": "United States",
+        "es": "Estados Unidos",
+        "fr": "États Unis",
+        "ja": "アメリカ",
+        "pt-BR": "EUA",
+        "ru": "США",
+        "zh-CN": "美国"
+      },
+      "iso_code": "US",
+      "subdivision": "{\"de\":\"New York\",\"en\":\"New York\",\"es\":\"Nueva York\",\"fr\":\"New York\",\"ja\":\"ニューヨーク州\",\"pt-BR\":\"Nova Iorque\",\"ru\":\"Нью-Йорк\",\"zh-CN\":\"纽约州\"}"
+    },
+    {
+      "publicKey": "035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226",
+      "alias": "WalletOfSatoshi.com",
+      "channels": 1705,
+      "city": {
+        "en": "Milton",
+        "ja": "ミルトン",
+        "ru": "Милтон",
+        "zh-CN": "米尔顿"
+      },
+      "country": {
+        "de": "Kanada",
+        "en": "Canada",
+        "es": "Canadá",
+        "fr": "Canada",
+        "ja": "カナダ",
+        "pt-BR": "Canadá",
+        "ru": "Канада",
+        "zh-CN": "加拿大"
+      },
+      "iso_code": "CA",
+      "subdivision": "{\"en\":\"Ontario\",\"fr\":\"Ontario\",\"ja\":\"オンタリオ州\",\"pt-BR\":\"Ontário\",\"ru\":\"Онтарио\",\"zh-CN\":\"安大略\"}"
+    },
+    {
+      "publicKey": "02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69",
+      "alias": "Kraken 🐙⚡",
+      "channels": 1379,
+      "city": { "en": "Boardman", "ru": "Бордман" },
+      "country": {
+        "de": "Vereinigte Staaten",
+        "en": "United States",
+        "es": "Estados Unidos",
+        "fr": "États Unis",
+        "ja": "アメリカ",
+        "pt-BR": "EUA",
+        "ru": "США",
+        "zh-CN": "美国"
+      },
+      "iso_code": "US",
+      "subdivision": "{\"de\":\"Oregon\",\"en\":\"Oregon\",\"es\":\"Oregón\",\"fr\":\"Oregon\",\"ja\":\"オレゴン州\",\"pt-BR\":\"Oregão\",\"ru\":\"Орегон\",\"zh-CN\":\"俄勒冈州\"}"
+    },
+    {
+      "publicKey": "0242a4ae0c5bef18048fbecf995094b74bfb0f7391418d71ed394784373f41e4f3",
+      "alias": "CoinGate",
+      "channels": 1284,
+      "city": {
+        "de": "Frankfurt am Main",
+        "en": "Frankfurt am Main",
+        "es": "Francfort",
+        "fr": "Francfort-sur-le-Main",
+        "ja": "フランクフルト・アム・マイン",
+        "pt-BR": "Frankfurt am Main",
+        "ru": "Франкфурт",
+        "zh-CN": "法兰克福"
+      },
+      "country": {
+        "de": "Deutschland",
+        "en": "Germany",
+        "es": "Alemania",
+        "fr": "Allemagne",
+        "ja": "ドイツ連邦共和国",
+        "pt-BR": "Alemanha",
+        "ru": "Германия",
+        "zh-CN": "德国"
+      },
+      "iso_code": "DE",
+      "subdivision": "{\"de\":\"Hessen\",\"en\":\"Hesse\",\"es\":\"Hessen\",\"fr\":\"Hesse\",\"ru\":\"Гессен\"}"
+    },
+    {
+      "publicKey": "037659a0ac8eb3b8d0a720114efc861d3a940382dcfa1403746b4f8f6b2e8810ba",
+      "alias": "nicehash-ln1",
+      "channels": 1224,
+      "city": {
+        "de": "Brüssel",
+        "en": "Brussels",
+        "es": "Bruselas",
+        "fr": "Bruxelles",
+        "ja": "ブリュッセル",
+        "pt-BR": "Bruxelas",
+        "ru": "Брюссель",
+        "zh-CN": "布鲁塞尔"
+      },
+      "country": {
+        "de": "Belgien",
+        "en": "Belgium",
+        "es": "Bélgica",
+        "fr": "Belgique",
+        "ja": "ベルギー王国",
+        "pt-BR": "Bélgica",
+        "ru": "Бельгия",
+        "zh-CN": "比利时"
+      },
+      "iso_code": "BE",
+      "subdivision": "{\"de\":\"Region Brüssel-Hauptstadt\",\"en\":\"Brussels Capital\",\"es\":\"Bruselas\",\"fr\":\"Région de Bruxelles\",\"pt-BR\":\"Bruxelas-Capital\"}"
+    }
+  ]
+}

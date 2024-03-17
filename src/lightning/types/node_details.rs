@@ -3,45 +3,45 @@ use std::collections::HashMap;
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Feature {
-  bit: i32,
-  name: String,
-  is_required: bool,
-  is_known: bool,
+  pub bit: i32,
+  pub name: String,
+  pub is_required: bool,
+  pub is_known: bool,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct NodeCountry {
-  de: String,
-  en: String,
-  es: String,
-  fr: String,
-  ja: String,
+  pub de: String,
+  pub en: String,
+  pub es: String,
+  pub fr: String,
+  pub ja: String,
   #[serde(rename = "pt-BR")]
-  pt_br: String,
-  ru: String,
+  pub pt_br: String,
+  pub ru: String,
   #[serde(rename = "zh-CN")]
-  zh_cn: String,
+  pub zh_cn: String,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct ChannelNode {
-  alias: String,
-  public_key: String,
-  channels: i32,
-  capacity: String,
+  pub alias: String,
+  pub public_key: String,
+  pub channels: i32,
+  pub capacity: String,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Channel {
-  status: i32,
-  closing_reason: Option<String>,
-  closing_date: Option<String>,
-  capacity: i32,
-  short_id: String,
+  pub status: i32,
+  pub closing_reason: Option<String>,
+  pub closing_date: Option<String>,
+  pub capacity: i32,
+  pub short_id: String,
   #[serde(deserialize_with = "deserialize_id")]
-  id: String,
-  fee_rate: i32,
-  node: ChannelNode,
+  pub id: String,
+  pub fee_rate: i32,
+  pub node: ChannelNode,
 }
 
 fn deserialize_id<'de, D>(deserializer: D) -> Result<String, D::Error>
