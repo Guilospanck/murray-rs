@@ -8,6 +8,19 @@ pub mod mining;
 
 use self::{address::AddressDetails, block::{Block, Block2Time, Extras}, fee::{FeesMempoolBlocks, FeesRecommended, MempoolData}, mining::HashrateData, transaction::{Transaction, TransactionStatus}};
 
+/// [`Blockchain`] error
+#[derive(thiserror::Error, Debug)]
+pub enum BlockchainError {
+  #[error("Invalid URL params: `{0}`")]
+  InvalidURLParams(String),
+  #[error("Bad request: `{0}`")]
+  BadRequest(String),
+  #[error("API error: `{0}`")]
+  APIError(String),
+  #[error("JSON parse error: `{0}`")]
+  JSONParseError(String),
+}
+
 pub struct GetBlockParams {
   pub hash: Option<String>,
   pub height: Option<u32>,

@@ -14,21 +14,8 @@ use self::types::{
   GetFeesRecommendedResponseJsonData, GetHashrateResponse, GetHashrateResponseJsonData,
   GetMempoolResponse, GetMempoolResponseJsonData, GetTransactionParams, GetTransactionResponse,
   GetTransactionResponseJsonData, PostTransactionParams, PostTransactionResponse,
-  PostTransactionResponseJsonData,
+  PostTransactionResponseJsonData, BlockchainError,
 };
-
-/// [`Blockchain`] error
-#[derive(thiserror::Error, Debug)]
-pub enum BlockchainError {
-  #[error("Invalid URL params: `{0}`")]
-  InvalidURLParams(String),
-  #[error("Bad request: `{0}`")]
-  BadRequest(String),
-  #[error("API error: `{0}`")]
-  APIError(String),
-  #[error("JSON parse error: `{0}`")]
-  JSONParseError(String),
-}
 
 type Result<T> = result::Result<T, BlockchainError>;
 

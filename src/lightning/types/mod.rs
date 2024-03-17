@@ -5,6 +5,19 @@ pub mod statistics;
 pub mod top_nodes;
 use self::{node_details::NodeData, statistics::Statistics, top_nodes::TopData};
 
+/// [`Lightning`] error
+#[derive(thiserror::Error, Debug)]
+pub enum LightningError {
+  #[error("Invalid URL params: `{0}`")]
+  InvalidURLParams(String),
+  #[error("Bad request: `{0}`")]
+  BadRequest(String),
+  #[error("API error: `{0}`")]
+  APIError(String),
+  #[error("JSON parse error: `{0}`")]
+  JSONParseError(String),
+}
+
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetNodeDetailsParams {

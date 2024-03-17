@@ -7,21 +7,8 @@ use crate::{GetHealthResponse, GetHealthResponseJsonData};
 
 use self::types::{
   node_details::NodeData, statistics::Statistics, top_nodes::TopData, GetNodeDetailsParams,
-  NodeResponseJsonData, StatisticsJsonData, TopJsonData,
+  NodeResponseJsonData, StatisticsJsonData, TopJsonData, LightningError,
 };
-
-/// [`Lightning`] error
-#[derive(thiserror::Error, Debug)]
-pub enum LightningError {
-  #[error("Invalid URL params: `{0}`")]
-  InvalidURLParams(String),
-  #[error("Bad request: `{0}`")]
-  BadRequest(String),
-  #[error("API error: `{0}`")]
-  APIError(String),
-  #[error("JSON parse error: `{0}`")]
-  JSONParseError(String),
-}
 
 type Result<T> = result::Result<T, LightningError>;
 

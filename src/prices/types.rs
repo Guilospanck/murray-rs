@@ -1,5 +1,18 @@
 use serde::{Deserialize, Serialize};
 
+/// [`Price`] error
+#[derive(thiserror::Error, Debug)]
+pub enum PriceError {
+  #[error("Invalid URL params: `{0}`")]
+  InvalidURLParams(String),
+  #[error("Bad request: `{0}`")]
+  BadRequest(String),
+  #[error("API error: `{0}`")]
+  APIError(String),
+  #[error("JSON parse error: `{0}`")]
+  JSONParseError(String),
+}
+
 #[derive(Debug, PartialEq, strum::Display)]
 pub enum Currency {
   BTC,
