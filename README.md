@@ -1,3 +1,6 @@
+![Build Status](https://github.com/Guilospanck/murray-rs/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/Guilospanck/murray-rs/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/Guilospanck/murray-rs/graph/badge.svg?token=E87lAHhkfC)](https://codecov.io/gh/Guilospanck/murray-rs)
+<!-- [![crates.io](https://img.shields.io/crates/v/grcov.svg)](https://crates.io/crates/grcov) -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 # Murray-rs

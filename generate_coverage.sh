@@ -34,7 +34,18 @@ run_tests() {
 
 run_gcov() {
   echo "> Running gcov";
-  grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing --keep-only "src/prices/mod.rs" --keep-only "src/blockchain/mod.rs" --keep-only "src/lightning/mod.rs" --keep-only "tests/*" -o ./target/debug/coverage/;
+  # grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing --keep-only "src/prices/mod.rs" --keep-only "src/blockchain/mod.rs" --keep-only "src/lightning/mod.rs" --keep-only "tests/*" -o ./target/debug/coverage/;
+  grcov . \
+    --branch \
+    --ignore-not-existing \
+    --keep-only "src/prices/mod.rs" \
+    --keep-only "src/blockchain/mod.rs" \
+    --keep-only "src/lightning/mod.rs" \
+    --keep-only "tests/*" \
+    --binary-path ./target/debug/ \
+    -s . \
+    -t html \
+    -o ./target/debug/coverage/;
 }
 
 generate_coverage() {
