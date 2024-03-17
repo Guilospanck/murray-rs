@@ -1,10 +1,13 @@
 #![allow(unused_doc_comments)]
-use murray_rs::blockchain::{
-  self,
-  types::{GetAddressParams, GetBlockParams, GetTransactionParams, PostTransactionParams},
-};
+// use murray_rs::blockchain::{
+//   self,
+//   types::{GetAddressParams, GetBlockParams, GetTransactionParams, PostTransactionParams},
+// };
+
+use murray_rs::{GetBlockParams, Murray};
 
 fn main() {
+  let mut murray = Murray::new();
   /** Prices
    *
     prices::set_base_url("http://localhost:3000".to_string());
@@ -17,19 +20,19 @@ fn main() {
   */
 
   /** Blockchain */
-  blockchain::set_base_url("http://localhost:3000".to_string());
+  murray.blockchain.set_base_url("http://localhost:3000".to_string());
 
-  let a = blockchain::get_block(GetBlockParams {
-    hash: None,
-    height: None,
-  });
-  println!("{:?}\n", a.unwrap());
-
-  // let b = blockchain::get_block2time(GetBlockParams {
-  //   hash: None,
-  //   height: Some(500000),
+  // let a = blockchain::get_block(GetBlockParams {
+  //   hash: Some("34/$#%sdf".to_string()),
+  //   height: None,
   // });
-  // println!("{:?}\n", b.unwrap());
+  // println!("{:?}\n", a.unwrap());
+
+  let b = murray.blockchain.get_block2time(GetBlockParams {
+    hash: None,
+    height: Some(500000),
+  });
+  println!("{:?}\n", b.unwrap());
 
   // let c = blockchain::get_fees_recommended();
   // println!("{:?}\n", c.unwrap());
