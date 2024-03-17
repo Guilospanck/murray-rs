@@ -1,7 +1,7 @@
 pub mod types;
 use std::result;
 
-use reqwest::{self, Client};
+use reqwest::Client;
 
 use crate::{GetHealthResponse, GetHealthResponseJsonData};
 

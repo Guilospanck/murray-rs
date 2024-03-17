@@ -1,7 +1,7 @@
 pub mod types;
 use std::result;
 
-use reqwest::{self, Client};
+use reqwest::Client;
 
 use crate::{GetHealthResponse, GetHealthResponseJsonData};
 
@@ -11,9 +11,10 @@ use self::types::{
   GetAddressUTXOResponseJsonData, GetBlock2TimeResponse, GetBlock2TimeResponseJsonData,
   GetBlockParams, GetBlockResponse, GetBlockResponseJsonData, GetFeesMempoolBlocksResponse,
   GetFeesMempoolBlocksResponseJsonData, GetFeesRecommendedResponse,
-  GetFeesRecommendedResponseJsonData, GetHashrateResponse, GetHashrateResponseJsonData, GetMempoolResponse, GetMempoolResponseJsonData,
-  GetTransactionParams, GetTransactionResponse, GetTransactionResponseJsonData,
-  PostTransactionParams, PostTransactionResponse, PostTransactionResponseJsonData,
+  GetFeesRecommendedResponseJsonData, GetHashrateResponse, GetHashrateResponseJsonData,
+  GetMempoolResponse, GetMempoolResponseJsonData, GetTransactionParams, GetTransactionResponse,
+  GetTransactionResponseJsonData, PostTransactionParams, PostTransactionResponse,
+  PostTransactionResponseJsonData,
 };
 
 /// [`Blockchain`] error
