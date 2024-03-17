@@ -11,10 +11,14 @@ use self::types::{
 /// [`Price`] error
 #[derive(thiserror::Error, Debug)]
 pub enum PriceError {
-  #[error("Invalid URL params")]
-  InvalidURLParams,
-  #[error("Bad request")]
-  BadRequest,
+  #[error("Invalid URL params: `{0}`")]
+  InvalidURLParams(String),
+  #[error("Bad request: `{0}`")]
+  BadRequest(String),
+  #[error("API error: `{0}`")]
+  APIError(String),
+  #[error("JSON parse error: `{0}`")]
+  JSONParseError(String),
 }
 
 type Result<T> = result::Result<T, PriceError>;
@@ -50,17 +54,25 @@ impl Prices {
 
     let url = match reqwest::Url::parse_with_params(&url, &params) {
       Ok(url) => url,
-      Err(_) => return Err(PriceError::InvalidURLParams),
+      Err(e) => return Err(PriceError::InvalidURLParams(e.to_string())),
     };
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
-      Ok(resp) => resp.json::<ConvertCurrencyJsonData>().await.unwrap(),
-      Err(_) => return Err(PriceError::BadRequest),
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
     };
 
-    Ok(resp.data)
+    let data = match server_response {
+      Ok(resp) => match resp.json::<ConvertCurrencyJsonData>().await {
+        Ok(r) => r.data,
+        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+      },
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
+    };
+
+    Ok(data)
   }
 
   #[tokio::main]
@@ -73,17 +85,25 @@ impl Prices {
 
     let url = match reqwest::Url::parse_with_params(&url, &params) {
       Ok(url) => url,
-      Err(_) => return Err(PriceError::InvalidURLParams),
+      Err(e) => return Err(PriceError::InvalidURLParams(e.to_string())),
     };
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
-      Ok(resp) => resp.json::<GetTickerJsonData>().await.unwrap(),
-      Err(_) => return Err(PriceError::BadRequest),
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
     };
 
-    Ok(resp.data)
+    let data = match server_response {
+      Ok(resp) => match resp.json::<GetTickerJsonData>().await {
+        Ok(r) => r.data,
+        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+      },
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
+    };
+
+    Ok(data)
   }
 
   #[tokio::main]
@@ -96,16 +116,24 @@ impl Prices {
 
     let url = match reqwest::Url::parse_with_params(&url, &params) {
       Ok(url) => url,
-      Err(_) => return Err(PriceError::InvalidURLParams),
+      Err(e) => return Err(PriceError::InvalidURLParams(e.to_string())),
     };
 
     let client = self.client.get(url).header("Accept", "application/json");
 
-    let resp = match client.send().await {
-      Ok(resp) => resp.json::<GetTickersJsonData>().await.unwrap(),
-      Err(_) => return Err(PriceError::BadRequest),
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
     };
 
-    Ok(resp.data)
+    let data = match server_response {
+      Ok(resp) => match resp.json::<GetTickersJsonData>().await {
+        Ok(r) => r.data,
+        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+      },
+      Err(e) => return Err(PriceError::APIError(e.to_string())),
+    };
+
+    Ok(data)
   }
 }
