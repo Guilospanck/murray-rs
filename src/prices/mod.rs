@@ -1,20 +1,12 @@
 pub mod types;
 use std::result;
 
-use lazy_static;
 use reqwest::{self, Client};
-use std::sync::{Arc, RwLock};
 
 use self::types::{
   ConvertCurrencyJsonData, ConvertCurrencyParams, ConvertCurrencyReturn, GetTickerJsonData,
   GetTickerParams, GetTickerReturn, GetTickersJsonData, GetTickersReturn,
 };
-
-const BASE_URL: &str = "http://prices.murrayrothbot.com";
-
-lazy_static::lazy_static! {
-  static ref PRICES: Arc<RwLock<Prices>> = Arc::new(RwLock::new(Prices::new(BASE_URL.to_string())));
-}
 
 /// [`Price`] error
 #[derive(thiserror::Error, Debug)]
@@ -27,7 +19,7 @@ pub enum PriceError {
 
 type Result<T> = result::Result<T, PriceError>;
 
-struct Prices {
+pub struct Prices {
   base_url: String,
   client: Client,
 }
@@ -116,24 +108,4 @@ impl Prices {
 
     Ok(resp.data)
   }
-}
-
-pub fn set_base_url(url: String) {
-  let mut prices = PRICES.write().unwrap();
-  prices.set_base_url(url);
-}
-
-pub fn convert_currency(params: ConvertCurrencyParams) -> Result<ConvertCurrencyReturn> {
-  let prices = PRICES.read().unwrap();
-  prices.convert_currency(params)
-}
-
-pub fn get_ticker(params: GetTickerParams) -> Result<GetTickerReturn> {
-  let prices = PRICES.read().unwrap();
-  prices.get_ticker(params)
-}
-
-pub fn get_tickers(params: GetTickerParams) -> Result<GetTickersReturn> {
-  let prices = PRICES.read().unwrap();
-  prices.get_tickers(params)
 }
