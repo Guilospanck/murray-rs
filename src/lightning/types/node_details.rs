@@ -36,7 +36,7 @@ pub struct Channel {
   pub status: i32,
   pub closing_reason: Option<String>,
   pub closing_date: Option<String>,
-  pub capacity: i32,
+  pub capacity: u64,
   pub short_id: String,
   #[serde(deserialize_with = "deserialize_id")]
   pub id: String,
@@ -58,8 +58,9 @@ where
 #[derive(Deserialize, Serialize, Debug)]
 pub struct NodeData {
   pub public_key: String,
-  pub first_seen: i32,
-  pub updated_at: i32,
+  pub alias: String,
+  pub first_seen: u64,
+  pub updated_at: u64,
   pub color: String,
   pub sockets: String,
   pub as_number: i32,

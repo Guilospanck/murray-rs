@@ -21,10 +21,10 @@ fn main() {
   murray
     .lightning
     .set_base_url("http://localhost:3000".to_string());
-  // let a = murray.lightning.get_node_details(GetNodeDetailsParams {
-  //   public_key: "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f".to_string(),
-  // });
-  // println!("{:?}", a.unwrap());
+  let a = murray.lightning.get_node_details(GetNodeDetailsParams {
+    public_key: "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f".to_string(),
+  });
+  println!("{:?}", a.unwrap());
 
   // let b = murray.lightning.get_statistics();
   // println!("{:?}", b.unwrap());
@@ -33,11 +33,11 @@ fn main() {
   // let country = c.top_by_channels[0].country.as_ref().unwrap() ;
   // println!("{:?}", country.de);
 
-  let d = murray.lightning.get_health();
-  println!("{:?}", d.unwrap());
+  // let d = murray.lightning.get_health();
+  // println!("{:?}", d.unwrap());
 
   // Blockchain
-  murray.blockchain.set_base_url("http://localhost:3000".to_string());
+  // murray.blockchain.set_base_url("http://localhost:3000".to_string());
 
   // let a = blockchain::get_block(GetBlockParams {
   //   hash: Some("34/$#%sdf".to_string()),
@@ -69,8 +69,8 @@ fn main() {
   // let h = murray.blockchain.get_hashrate();
   // println!("{:?}\n", h.unwrap());
 
-  let i = murray.blockchain.get_health();
-  println!("{:?}\n", i.unwrap());
+  // let i = murray.blockchain.get_health();
+  // println!("{:?}\n", i.unwrap());
 
   // let j = blockchain::get_mempool();
   // println!("{:?}\n", j.unwrap());

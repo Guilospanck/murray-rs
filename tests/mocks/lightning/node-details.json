@@ -2,7 +2,7 @@
   "public_key": "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f",
   "alias": "ACINQ",
   "first_seen": 1522941222,
-  "updated_at": 1710683606,
+  "updated_at": 1710688558,
   "color": "#49daaa",
   "sockets": "3.33.236.230:9735,of7husrflx7sforh3fw6yqlpwstee3wg5imvvmkp4bz6rbjxtg5nljad.onion:9735",
   "as_number": 16509,
@@ -84,166 +84,169 @@
       "is_required": false,
       "is_known": true
     },
-    { "bit": 47, "name": "scid-alias", "is_required": false, "is_known": true }
+    {
+      "bit": 47,
+      "name": "scid-alias",
+      "is_required": false,
+      "is_known": true
+    }
   ],
   "featuresBits": "a080288a6981",
-  "active_channel_count": 2679,
-  "capacity": "48318432753",
+  "active_channel_count": 2673,
+  "capacity": "48291052035",
   "opened_channel_count": 3765,
-  "closed_channel_count": 13638,
+  "closed_channel_count": 13632,
   "custom_records": {},
   "channels": [
-    [
-      {
-        "status": 1,
-        "closing_reason": null,
-        "closing_date": null,
-        "capacity": 500000000,
-        "short_id": "732105x821x1",
-        "id": "804957960306753537",
-        "fee_rate": 749,
-        "node": {
-          "alias": "Kraken 🐙⚡",
-          "public_key": "02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69",
-          "channels": 1378,
-          "capacity": "26810503995"
-        }
-      },
-      {
-        "status": 1,
-        "closing_reason": null,
-        "closing_date": null,
-        "capacity": 500000000,
-        "short_id": "735789x1767x1",
-        "id": "809008561205477377",
-        "fee_rate": 749,
-        "node": {
-          "alias": "Kraken 🐙⚡",
-          "public_key": "02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69",
-          "channels": 1378,
-          "capacity": "26810503995"
-        }
-      },
-      {
-        "status": 1,
-        "closing_reason": null,
-        "closing_date": null,
-        "capacity": 500000000,
-        "short_id": "775673x1007x1",
-        "id": "852861482917888001",
-        "fee_rate": 999,
-        "node": {
-          "alias": "okx",
-          "public_key": "0294ac3e099def03c12a37e30fe5364b1223fd60069869142ef96580c8439c2e0a",
-          "channels": 412,
-          "capacity": "39435715469"
-        }
-      },
-      {
-        "status": 1,
-        "closing_reason": null,
-        "closing_date": null,
-        "capacity": 500000000,
-        "short_id": "775673x1022x1",
-        "id": "852861482918871041",
-        "fee_rate": 999,
-        "node": {
-          "alias": "okx",
-          "public_key": "0294ac3e099def03c12a37e30fe5364b1223fd60069869142ef96580c8439c2e0a",
-          "channels": 412,
-          "capacity": "39435715469"
-        }
-      },
-      {
-        "status": 1,
-        "closing_reason": null,
-        "closing_date": null,
-        "capacity": 500000000,
-        "short_id": "782328x1567x0",
-        "id": "860178732837437440",
-        "fee_rate": 749,
-        "node": {
-          "alias": "Kraken 🐙⚡",
-          "public_key": "02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69",
-          "channels": 1378,
-          "capacity": "26810503995"
-        }
-      },
-      {
-        "status": 1,
-        "closing_reason": null,
-        "closing_date": null,
-        "capacity": 500000000,
-        "short_id": "789836x3154x0",
-        "id": "868433866242785280",
-        "fee_rate": 999,
-        "node": {
-          "alias": "fixedfloat.com",
-          "public_key": "037f990e61acee8a7697966afd29dd88f3b1f8a7b14d625c4f8742bd952003a590",
-          "channels": 215,
-          "capacity": "8243046220"
-        }
-      },
-      {
-        "status": 1,
-        "closing_reason": null,
-        "closing_date": null,
-        "capacity": 500000000,
-        "short_id": "794006x954x0",
-        "id": 873018829586432000,
-        "fee_rate": 999,
-        "node": {
-          "alias": "fixedfloat.com",
-          "public_key": "037f990e61acee8a7697966afd29dd88f3b1f8a7b14d625c4f8742bd952003a590",
-          "channels": 215,
-          "capacity": "8243046220"
-        }
-      },
-      {
-        "status": 1,
-        "closing_reason": null,
-        "closing_date": null,
-        "capacity": 500000000,
-        "short_id": "800090x2368x0",
-        "id": "879708258422489088",
-        "fee_rate": 749,
-        "node": {
-          "alias": "Kraken 🐙⚡",
-          "public_key": "02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69",
-          "channels": 1378,
-          "capacity": "26810503995"
-        }
-      },
-      {
-        "status": 1,
-        "closing_reason": null,
-        "closing_date": null,
-        "capacity": 500000000,
-        "short_id": "810642x2037x0",
-        "id": "891310305097089024",
-        "fee_rate": 999,
-        "node": {
-          "alias": "LNBϟG [Hub-3]",
-          "public_key": "02c91d6aa51aa940608b497b6beebcb1aec05be3c47704b682b3889424679ca490",
-          "channels": 492,
-          "capacity": "22281846955"
-        }
-      },
-      {
-        "status": 1,
-        "closing_reason": null,
-        "closing_date": null,
-        "capacity": 500000000,
-        "short_id": "810642x2037x1",
-        "id": "891310305097089025",
-        "fee_rate": 999,
-        "node": {
-          "alias": "LNBϟG [Hub-3]",
-          "public_key": "02c91d6aa51aa940608b497b6beebcb1aec05be3c47704b682b3889424679ca490",
-          "channels": 492,
-          "capacity": "22281846955"
-        }
+    {
+      "status": 1,
+      "closing_reason": null,
+      "closing_date": null,
+      "capacity": 500000000,
+      "short_id": "732105x821x1",
+      "id": "804957960306753537",
+      "fee_rate": 749,
+      "node": {
+        "alias": "Kraken 🐙⚡",
+        "public_key": "02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69",
+        "channels": 1378,
+        "capacity": "26810503995"
       }
-    ]
+    },
+    {
+      "status": 1,
+      "closing_reason": null,
+      "closing_date": null,
+      "capacity": 500000000,
+      "short_id": "735789x1767x1",
+      "id": "809008561205477377",
+      "fee_rate": 749,
+      "node": {
+        "alias": "Kraken 🐙⚡",
+        "public_key": "02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69",
+        "channels": 1378,
+        "capacity": "26810503995"
+      }
+    },
+    {
+      "status": 1,
+      "closing_reason": null,
+      "closing_date": null,
+      "capacity": 500000000,
+      "short_id": "775673x1007x1",
+      "id": "852861482917888001",
+      "fee_rate": 999,
+      "node": {
+        "alias": "okx",
+        "public_key": "0294ac3e099def03c12a37e30fe5364b1223fd60069869142ef96580c8439c2e0a",
+        "channels": 412,
+        "capacity": "39435715469"
+      }
+    },
+    {
+      "status": 1,
+      "closing_reason": null,
+      "closing_date": null,
+      "capacity": 500000000,
+      "short_id": "775673x1022x1",
+      "id": "852861482918871041",
+      "fee_rate": 999,
+      "node": {
+        "alias": "okx",
+        "public_key": "0294ac3e099def03c12a37e30fe5364b1223fd60069869142ef96580c8439c2e0a",
+        "channels": 412,
+        "capacity": "39435715469"
+      }
+    },
+    {
+      "status": 1,
+      "closing_reason": null,
+      "closing_date": null,
+      "capacity": 500000000,
+      "short_id": "782328x1567x0",
+      "id": "860178732837437440",
+      "fee_rate": 749,
+      "node": {
+        "alias": "Kraken 🐙⚡",
+        "public_key": "02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69",
+        "channels": 1378,
+        "capacity": "26810503995"
+      }
+    },
+    {
+      "status": 1,
+      "closing_reason": null,
+      "closing_date": null,
+      "capacity": 500000000,
+      "short_id": "789836x3154x0",
+      "id": "868433866242785280",
+      "fee_rate": 999,
+      "node": {
+        "alias": "fixedfloat.com",
+        "public_key": "037f990e61acee8a7697966afd29dd88f3b1f8a7b14d625c4f8742bd952003a590",
+        "channels": 215,
+        "capacity": "8243046220"
+      }
+    },
+    {
+      "status": 1,
+      "closing_reason": null,
+      "closing_date": null,
+      "capacity": 500000000,
+      "short_id": "794006x954x0",
+      "id": 873018829586432000,
+      "fee_rate": 999,
+      "node": {
+        "alias": "fixedfloat.com",
+        "public_key": "037f990e61acee8a7697966afd29dd88f3b1f8a7b14d625c4f8742bd952003a590",
+        "channels": 215,
+        "capacity": "8243046220"
+      }
+    },
+    {
+      "status": 1,
+      "closing_reason": null,
+      "closing_date": null,
+      "capacity": 500000000,
+      "short_id": "800090x2368x0",
+      "id": "879708258422489088",
+      "fee_rate": 749,
+      "node": {
+        "alias": "Kraken 🐙⚡",
+        "public_key": "02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69",
+        "channels": 1378,
+        "capacity": "26810503995"
+      }
+    },
+    {
+      "status": 1,
+      "closing_reason": null,
+      "closing_date": null,
+      "capacity": 500000000,
+      "short_id": "810642x2037x0",
+      "id": "891310305097089024",
+      "fee_rate": 999,
+      "node": {
+        "alias": "LNBϟG [Hub-3]",
+        "public_key": "02c91d6aa51aa940608b497b6beebcb1aec05be3c47704b682b3889424679ca490",
+        "channels": 492,
+        "capacity": "22281846955"
+      }
+    },
+    {
+      "status": 1,
+      "closing_reason": null,
+      "closing_date": null,
+      "capacity": 500000000,
+      "short_id": "810642x2037x1",
+      "id": "891310305097089025",
+      "fee_rate": 999,
+      "node": {
+        "alias": "LNBϟG [Hub-3]",
+        "public_key": "02c91d6aa51aa940608b497b6beebcb1aec05be3c47704b682b3889424679ca490",
+        "channels": 492,
+        "capacity": "22281846955"
+      }
+    }
   ]
 }
