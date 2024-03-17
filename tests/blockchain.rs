@@ -360,3 +360,48 @@ fn get_address_transactions_should_return_error_when_body_returns_wrong_json() {
   let _response = murray.blockchain.get_address_transactions(GetAddressParams { address: "some-address".to_string() })
   .unwrap();
 }
+
+/// GET ADDRESS UTXOS
+#[test]
+fn get_address_utxos_should_return_successfully() {
+  // arrange
+  let expected_response = fs::read_to_string("tests/mocks/get-address-utxos.json").expect("Unable to read file");
+  let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
+  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let sut = Sut::new();
+  let (mock, murray) = sut.from("/address/some-address/txs/utxo", 200, Method::GET, &body);
+
+  // act
+  let response = murray.blockchain.get_address_utxos(GetAddressParams { address: "some-address".to_string() })
+  .unwrap();
+
+  // assert
+  mock.assert();
+  assert_eq!(response[0].txid, expected_response[0]["txid"]);
+}
+
+#[test]
+#[should_panic]
+fn get_address_utxos_should_return_error_when_problem_with_server() {
+  // arrange
+  let body = "".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/address/some-address/txs/utxo", 400, Method::GET, &body);
+
+  // act
+  let _response = murray.blockchain.get_address_utxos(GetAddressParams { address: "some-address".to_string() })
+  .unwrap();
+}
+
+#[test]
+#[should_panic]
+fn get_address_utxos_should_return_error_when_body_returns_wrong_json() {
+  // arrange
+  let body = "wrong-return".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/address/some-address/txs/utxo", 200, Method::GET, &body);
+
+  // act
+  let _response = murray.blockchain.get_address_utxos(GetAddressParams { address: "some-address".to_string() })
+  .unwrap();
+}
