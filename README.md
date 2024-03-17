@@ -28,7 +28,7 @@ fn main() {
     hash: None,
     height: Some(500000),
   });
-  println!("{:?}\n", a.unwrap());
+  println!("{:?}", a.unwrap());
 }
 ```
 
@@ -87,9 +87,9 @@ fn main() {
 
 Find more examples in the repository to guide your implementation:
 
-- [Blockchain](./examples/blockchain.ts)
-- [Lightning](./examples/lightning.ts)
-- [Prices](./examples/prices.ts)
+- [Blockchain](./examples/blockchain.rs)
+- [Lightning](./examples/lightning.rs)
+- [Prices](./examples/prices.rs)
 
 ## Self Hosted APIs
 
@@ -101,7 +101,7 @@ Leverage your self-hosted APIs for enhanced control and customization:
 
 ## Contributing
 
-We welcome contributions! For significant changes or enhancements, please open an issue first to discuss your ideas.
+Contributions are welcome! For significant changes or enhancements, please open an issue first to discuss your ideas.
 
 ## License
 
