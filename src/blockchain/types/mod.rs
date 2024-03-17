@@ -29,7 +29,7 @@ pub struct PostTransactionParams {
 pub struct GetBlockResponse {
   #[serde(flatten)]
   pub block: Block,
-  pub extras: Extras,
+  pub extras: Option<Extras>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]

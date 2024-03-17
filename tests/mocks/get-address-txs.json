@@ -7,6 +7,7 @@
     "vout": [],
     "size": 255,
     "weight": 1020,
+    "sigops": 109,
     "fee": 10000,
     "status": {
       "confirmed": true,

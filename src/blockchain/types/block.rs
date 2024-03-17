@@ -63,5 +63,5 @@ pub struct Block {
   pub size: u32,
   pub weight: u32,
   pub previousblockhash: String,
-  pub mediantime: Option<u32>,
+  pub mediantime: u32,
 }
