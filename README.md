@@ -22,44 +22,53 @@ After installation, import `murray-rs` into your project to access the various A
 ### Blockchain API
 
 ```rs
-use murray_rs::{GetBlockParams, Murray};
+use murray_rs::{GetBlockParams, Murray, BlockchainError};
 
-fn main() {
+fn main() -> std::result::Result<(), BlockchainError> {
   let murray = Murray::default();
 
   let a = murray.blockchain.get_block(GetBlockParams {
     hash: None,
     height: Some(500000),
-  });
-  println!("{:?}", a.unwrap());
+  })?;
+  println!("{:?}", a);
+
+  Ok(())
 }
 ```
 
 ### Lightning API
 
 ```rs
-use murray_rs::{Murray, GetNodeDetailsParams};
+use murray_rs::{Murray, GetNodeDetailsParams, LightningError};
 
-fn main() {
+fn main() -> std::result::Result<(), LightningError> {
   let murray = Murray::default();
 
   let a = murray.lightning.get_node_details(GetNodeDetailsParams {
     public_key: "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f".to_string(),
-  });
-  println!("{:?}", a.unwrap());
+  })?;
+  println!("{:?}", a);
+
+  Ok(())
 }
 ```
 
 ### Prices API
 
 ```rs
-use murray_rs::{Murray, ConvertCurrencyParams, Currency};
+use murray_rs::{Murray, ConvertCurrencyParams, Currency, PriceError};
 
-fn main() {
+fn main() -> std::result::Result<(), PriceError> {
   let murray = Murray::default();
-  
-  let a = murray.prices.convert_currency(ConvertCurrencyParams { currency: Currency::BRL, value: 100 });
-  println!("{:?}", a.unwrap());
+
+  let a = murray.prices.convert_currency(ConvertCurrencyParams {
+    currency: Currency::BRL,
+    value: 100,
+  })?;
+  println!("{:?}", a);
+
+  Ok(())
 }
 ```
 
