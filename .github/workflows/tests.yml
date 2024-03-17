@@ -56,10 +56,18 @@ jobs:
         find . -name '*.gcda' -delete
         cargo install grcov --force;
         rm -rf lcov.info;
-        sudo apt install make -y
-        make test $CARGO_OPTIONS;    
-        zip -0 ccov.zip `find . \( -name "$PROJECT_NAME_UNDERSCORE*.gc*" \) -print`;
-        grcov ccov.zip -s . -t lcov --llvm --branch --ignore-not-existing --ignore "/*" -o lcov.info;
+        cargo test --tests $CARGO_OPTIONS;    
+        grcov . \
+          --branch \
+          --ignore-not-existing \
+          --keep-only "src/prices/mod.rs" \
+          --keep-only "src/blockchain/mod.rs" \
+          --keep-only "src/lightning/mod.rs" \
+          --keep-only "tests/*" \
+          --binary-path ./target/debug/ \
+          -s . \
+          -t lcov \
+          -o lcov.info;
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
