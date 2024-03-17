@@ -26,10 +26,15 @@ impl Lightning {
     }
   }
 
+  /// Change the base url on the fly for the [`Lightning`] calls.
+  /// 
   pub fn set_base_url(&mut self, base_url: String) {
     self.base_url = base_url;
   }
 
+  /// Get information regarding a lightning
+  /// node of a specific [`public_key`](self::types::GetNodeDetailsParams).
+  /// 
   #[tokio::main]
   pub async fn get_node_details(
     &self,
@@ -55,6 +60,10 @@ impl Lightning {
     Ok(data)
   }
 
+  /// Get network-wide statistics from the lightning network,
+  /// such as total number of channels and nodes, total capacity,
+  /// average/median fee figures and more.
+  /// 
   #[tokio::main]
   pub async fn get_statistics(&self) -> Result<Statistics> {
     let url = format!("{}/statistics", self.base_url);
@@ -77,6 +86,10 @@ impl Lightning {
     Ok(data)
   }
 
+  /// Gets two lists of the top nodes:
+  /// one ordered by liquidity (aggregate channel capacity)
+  /// and the other ordered by connectivity (number of open channels).
+  /// 
   #[tokio::main]
   pub async fn get_top_nodes(&self) -> Result<TopData> {
     let url = format!("{}/top", self.base_url);
@@ -99,6 +112,11 @@ impl Lightning {
     Ok(data)
   }
 
+  /// Get simple information regarding the health
+  /// of the lightning service.
+  /// 
+  /// More info at [service-lightning](https://github.com/murray-rothbot/service-lightning).
+  /// 
   #[tokio::main]
   pub async fn get_health(&self) -> Result<GetHealthResponse> {
     let url = format!("{}/health", self.base_url);
