@@ -86,7 +86,7 @@ impl Lightning {
     Ok(data)
   }
 
-  /// Gets two lists of the top nodes:
+  /// Get two lists of the top nodes:
   /// one ordered by liquidity (aggregate channel capacity)
   /// and the other ordered by connectivity (number of open channels).
   /// 

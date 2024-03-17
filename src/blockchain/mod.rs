@@ -33,10 +33,17 @@ impl Blockchain {
     }
   }
 
+  /// Change the base url on the fly for the [`Blockchain`] calls.
+  /// 
   pub fn set_base_url(&mut self, base_url: String) {
     self.base_url = base_url;
   }
 
+  /// Get details about a specific block determined by
+  /// its height or hash.
+  /// If none is passed, it will return information of the
+  /// last block (block tip).
+  /// 
   #[tokio::main]
   pub async fn get_block(
     &self,
@@ -77,6 +84,8 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Get block time.
+  /// 
   #[tokio::main]
   pub async fn get_block2time(
     &self,
@@ -117,6 +126,8 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Get currently suggested fees for new transactions.
+  /// 
   #[tokio::main]
   pub async fn get_fees_recommended(&self) -> Result<GetFeesRecommendedResponse> {
     let url = format!("{}/fees/recommended", self.base_url);
@@ -139,6 +150,8 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Get current mempool as projected blocks.
+  /// 
   #[tokio::main]
   pub async fn get_fees_mempool_blocks(&self) -> Result<Vec<GetFeesMempoolBlocksResponse>> {
     let url = format!("{}/fees/mempool-blocks", self.base_url);
@@ -161,6 +174,10 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Get details about an address.
+  /// Check [`GetAddressDetailsResponse`](self::types::GetAddressDetailsResponse)
+  /// for available data.
+  /// 
   #[tokio::main]
   pub async fn get_address_details(
     &self,
@@ -186,6 +203,10 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Get transaction history for the specified address/scripthash,
+  /// sorted with newest first.
+  /// Returns up to 50 mempool transactions plus the first 25 confirmed transactions.
+  /// 
   #[tokio::main]
   pub async fn get_address_transactions(
     &self,
@@ -211,6 +232,8 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Get the list of unspent transaction outputs associated with the address/scripthash. 
+  /// 
   #[tokio::main]
   pub async fn get_address_utxos(
     &self,
@@ -236,6 +259,8 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Get network-wide hashrate and difficulty figures.
+  /// 
   #[tokio::main]
   pub async fn get_hashrate(&self) -> Result<GetHashrateResponse> {
     let url = format!("{}/hashrate", self.base_url);
@@ -258,6 +283,11 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Get simple information regarding the health
+  /// of the blockchain service.
+  /// 
+  /// More info at [service-blockchain](https://github.com/murray-rothbot/service-blockchain).
+  /// 
   #[tokio::main]
   pub async fn get_health(&self) -> Result<GetHealthResponse> {
     let url = format!("{}/health", self.base_url);
@@ -280,6 +310,8 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Get current mempool backlog statistics.
+  /// 
   #[tokio::main]
   pub async fn get_mempool(&self) -> Result<GetMempoolResponse> {
     let url = format!("{}/mempool", self.base_url);
@@ -302,6 +334,8 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Get details about a transaction.
+  /// 
   #[tokio::main]
   pub async fn get_transaction(
     &self,
@@ -327,6 +361,10 @@ impl Blockchain {
     Ok(data)
   }
 
+  /// Broadcast a raw transaction to the network.
+  /// The transaction should be provided as hex in the request body.
+  /// The txid will be returned on success.
+  /// 
   #[tokio::main]
   pub async fn post_transaction(
     &self,
