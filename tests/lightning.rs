@@ -99,7 +99,7 @@ fn get_node_details_should_return_error_when_problem_with_server() {
   );
 
   // act
-  let response = murray
+  let _response = murray
     .lightning
     .get_node_details(GetNodeDetailsParams {
       public_key: pub_key_param,
