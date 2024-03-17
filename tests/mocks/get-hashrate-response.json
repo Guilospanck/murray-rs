@@ -1,0 +1,38 @@
+{
+  "progressPercent": 44.397234501112074,
+  "difficultyChange": 98.45932018381687,
+  "estimatedRetargetDate": 1627762478,
+  "remainingBlocks": 1121,
+  "remainingTime": 665977,
+  "previousRetarget": -4.807005268478962,
+  "previousTime": 1710397689,
+  "nextRetargetHeight": 741888,
+  "timeAvg": 302328,
+  "adjustedTimeAvg": 302328,
+  "timeOffset": 0,
+  "expectedBlocks": 431.755,
+  "hashrates": [
+    {
+      "timestamp": 1652486400,
+      "avgHashrate": 236499762108771800000
+    },
+    {
+      "timestamp": 1652572800,
+      "avgHashrate": 217473276787331300000
+    },
+    {
+      "timestamp": 1652659200,
+      "avgHashrate": 189877203506913000000
+    }
+  ],
+  "difficulty": [
+    {
+      "time": 1652468330,
+      "difficulty": 31251101365711.12,
+      "height": 736249,
+      "adjustment": 1.0579279661178589
+    }
+  ],
+  "currentHashrate": 252033247355212300000,
+  "currentDifficulty": 31251101365711.12
+}

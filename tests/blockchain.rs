@@ -35,18 +35,21 @@ impl Sut {
 #[test]
 fn get_block_should_return_successfully() {
   // arrange
-  let expected_response = fs::read_to_string("tests/mocks/block-response.json").expect("Unable to read file");
+  let expected_response =
+    fs::read_to_string("tests/mocks/block-response.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
   let (mock, murray) = sut.from("/block", 200, Method::GET, &body);
 
   // act
-  let response = murray.blockchain.get_block(GetBlockParams {
-    hash: Some("some_value".to_string()),
-    height: Some(50000),
-  })
-  .unwrap();
+  let response = murray
+    .blockchain
+    .get_block(GetBlockParams {
+      hash: Some("some_value".to_string()),
+      height: Some(50000),
+    })
+    .unwrap();
 
   // assert
   mock.assert();
@@ -56,18 +59,21 @@ fn get_block_should_return_successfully() {
 #[test]
 fn get_block_should_return_successfully_when_no_params() {
   // arrange
-  let expected_response = fs::read_to_string("tests/mocks/block-response.json").expect("Unable to read file");
+  let expected_response =
+    fs::read_to_string("tests/mocks/block-response.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
   let (mock, murray) = sut.from("/block", 200, Method::GET, &body);
 
   // act
-  let response = murray.blockchain.get_block(GetBlockParams {
-    hash: None,
-    height: None,
-  })
-  .unwrap();
+  let response = murray
+    .blockchain
+    .get_block(GetBlockParams {
+      hash: None,
+      height: None,
+    })
+    .unwrap();
 
   // assert
   mock.assert();
@@ -83,11 +89,13 @@ fn get_block_should_return_error_when_problem_with_server() {
   let (_mock, murray) = sut.from("/block", 400, Method::GET, &body);
 
   // act
-  let _response = murray.blockchain.get_block(GetBlockParams {
-    hash: None,
-    height: None,
-  })
-  .unwrap();
+  let _response = murray
+    .blockchain
+    .get_block(GetBlockParams {
+      hash: None,
+      height: None,
+    })
+    .unwrap();
 }
 
 #[test]
@@ -99,29 +107,34 @@ fn get_block_should_return_error_when_body_returns_wrong_json() {
   let (_mock, murray) = sut.from("/block", 200, Method::GET, &body);
 
   // act
-  let _response = murray.blockchain.get_block(GetBlockParams {
-    hash: None,
-    height: None,
-  })
-  .unwrap();
+  let _response = murray
+    .blockchain
+    .get_block(GetBlockParams {
+      hash: None,
+      height: None,
+    })
+    .unwrap();
 }
 
 /// GET BLOCK2TIME
 #[test]
 fn get_block2time_should_return_successfully() {
   // arrange
-  let expected_response = fs::read_to_string("tests/mocks/block2time-response.json").expect("Unable to read file");
+  let expected_response =
+    fs::read_to_string("tests/mocks/block2time-response.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
   let (mock, murray) = sut.from("/block2time", 200, Method::GET, &body);
 
   // act
-  let response = murray.blockchain.get_block2time(GetBlockParams {
-    hash: Some("some_value".to_string()),
-    height: Some(50000),
-  })
-  .unwrap();
+  let response = murray
+    .blockchain
+    .get_block2time(GetBlockParams {
+      hash: Some("some_value".to_string()),
+      height: Some(50000),
+    })
+    .unwrap();
 
   // assert
   mock.assert();
@@ -131,18 +144,21 @@ fn get_block2time_should_return_successfully() {
 #[test]
 fn get_block2time_should_return_successfully_when_no_params() {
   // arrange
-  let expected_response = fs::read_to_string("tests/mocks/block2time-response.json").expect("Unable to read file");
+  let expected_response =
+    fs::read_to_string("tests/mocks/block2time-response.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
   let (mock, murray) = sut.from("/block2time", 200, Method::GET, &body);
 
   // act
-  let response = murray.blockchain.get_block2time(GetBlockParams {
-    hash: None,
-    height: None,
-  })
-  .unwrap();
+  let response = murray
+    .blockchain
+    .get_block2time(GetBlockParams {
+      hash: None,
+      height: None,
+    })
+    .unwrap();
 
   // assert
   mock.assert();
@@ -158,11 +174,13 @@ fn get_block2time_should_return_error_when_problem_with_server() {
   let (_mock, murray) = sut.from("/block2time", 400, Method::GET, &body);
 
   // act
-  let _response = murray.blockchain.get_block2time(GetBlockParams {
-    hash: None,
-    height: None,
-  })
-  .unwrap();
+  let _response = murray
+    .blockchain
+    .get_block2time(GetBlockParams {
+      hash: None,
+      height: None,
+    })
+    .unwrap();
 }
 
 #[test]
@@ -174,18 +192,21 @@ fn get_block2time_should_return_error_when_body_returns_wrong_json() {
   let (_mock, murray) = sut.from("/block2time", 200, Method::GET, &body);
 
   // act
-  let _response = murray.blockchain.get_block2time(GetBlockParams {
-    hash: None,
-    height: None,
-  })
-  .unwrap();
+  let _response = murray
+    .blockchain
+    .get_block2time(GetBlockParams {
+      hash: None,
+      height: None,
+    })
+    .unwrap();
 }
 
 /// GET FEES RECOMMENDED
 #[test]
 fn get_fees_recommended_should_return_successfully() {
   // arrange
-  let expected_response = fs::read_to_string("tests/mocks/fees-recommended.json").expect("Unable to read file");
+  let expected_response =
+    fs::read_to_string("tests/mocks/fees-recommended.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
@@ -230,7 +251,8 @@ fn get_fees_recommended_should_return_error_when_body_returns_wrong_json() {
 #[test]
 fn get_fees_mempool_blocks_should_return_successfully() {
   // arrange
-  let expected_response = fs::read_to_string("tests/mocks/fees-mempool-blocks.json").expect("Unable to read file");
+  let expected_response =
+    fs::read_to_string("tests/mocks/fees-mempool-blocks.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
@@ -275,19 +297,27 @@ fn get_fees_mempool_blocks_should_return_error_when_body_returns_wrong_json() {
 #[test]
 fn get_address_details_should_return_successfully() {
   // arrange
-  let expected_response = fs::read_to_string("tests/mocks/get-address-details.json").expect("Unable to read file");
+  let expected_response =
+    fs::read_to_string("tests/mocks/get-address-details.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
   let (mock, murray) = sut.from("/address/some-address", 200, Method::GET, &body);
 
   // act
-  let response = murray.blockchain.get_address_details(GetAddressParams { address: "some-address".to_string() })
-  .unwrap();
+  let response = murray
+    .blockchain
+    .get_address_details(GetAddressParams {
+      address: "some-address".to_string(),
+    })
+    .unwrap();
 
   // assert
   mock.assert();
-  assert_eq!(response.address_details.mempool_stats.funded_txo_sum, expected_response["mempool_stats"]["funded_txo_sum"]);
+  assert_eq!(
+    response.address_details.mempool_stats.funded_txo_sum,
+    expected_response["mempool_stats"]["funded_txo_sum"]
+  );
 }
 
 #[test]
@@ -299,8 +329,12 @@ fn get_address_details_should_return_error_when_problem_with_server() {
   let (_mock, murray) = sut.from("/address/some-address", 400, Method::GET, &body);
 
   // act
-  let _response = murray.blockchain.get_address_details(GetAddressParams { address: "some-address".to_string() })
-  .unwrap();
+  let _response = murray
+    .blockchain
+    .get_address_details(GetAddressParams {
+      address: "some-address".to_string(),
+    })
+    .unwrap();
 }
 
 #[test]
@@ -312,27 +346,39 @@ fn get_address_details_should_return_error_when_body_returns_wrong_json() {
   let (_mock, murray) = sut.from("/address/some-address", 200, Method::GET, &body);
 
   // act
-  let _response = murray.blockchain.get_address_details(GetAddressParams { address: "some-address".to_string() })
-  .unwrap();
+  let _response = murray
+    .blockchain
+    .get_address_details(GetAddressParams {
+      address: "some-address".to_string(),
+    })
+    .unwrap();
 }
 
 /// GET ADDRESS TRANSACTIONS
 #[test]
 fn get_address_transactions_should_return_successfully() {
   // arrange
-  let expected_response = fs::read_to_string("tests/mocks/get-address-txs.json").expect("Unable to read file");
+  let expected_response =
+    fs::read_to_string("tests/mocks/get-address-txs.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
   let (mock, murray) = sut.from("/address/some-address/txs", 200, Method::GET, &body);
 
   // act
-  let response = murray.blockchain.get_address_transactions(GetAddressParams { address: "some-address".to_string() })
-  .unwrap();
+  let response = murray
+    .blockchain
+    .get_address_transactions(GetAddressParams {
+      address: "some-address".to_string(),
+    })
+    .unwrap();
 
   // assert
   mock.assert();
-  assert_eq!(response[0].address_transactions.txid, expected_response[0]["txid"]);
+  assert_eq!(
+    response[0].address_transactions.txid,
+    expected_response[0]["txid"]
+  );
 }
 
 #[test]
@@ -344,8 +390,12 @@ fn get_address_transactions_should_return_error_when_problem_with_server() {
   let (_mock, murray) = sut.from("/address/some-address/txs", 400, Method::GET, &body);
 
   // act
-  let _response = murray.blockchain.get_address_transactions(GetAddressParams { address: "some-address".to_string() })
-  .unwrap();
+  let _response = murray
+    .blockchain
+    .get_address_transactions(GetAddressParams {
+      address: "some-address".to_string(),
+    })
+    .unwrap();
 }
 
 #[test]
@@ -357,23 +407,32 @@ fn get_address_transactions_should_return_error_when_body_returns_wrong_json() {
   let (_mock, murray) = sut.from("/address/some-address/txs", 200, Method::GET, &body);
 
   // act
-  let _response = murray.blockchain.get_address_transactions(GetAddressParams { address: "some-address".to_string() })
-  .unwrap();
+  let _response = murray
+    .blockchain
+    .get_address_transactions(GetAddressParams {
+      address: "some-address".to_string(),
+    })
+    .unwrap();
 }
 
 /// GET ADDRESS UTXOS
 #[test]
 fn get_address_utxos_should_return_successfully() {
   // arrange
-  let expected_response = fs::read_to_string("tests/mocks/get-address-utxos.json").expect("Unable to read file");
+  let expected_response =
+    fs::read_to_string("tests/mocks/get-address-utxos.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
   let (mock, murray) = sut.from("/address/some-address/txs/utxo", 200, Method::GET, &body);
 
   // act
-  let response = murray.blockchain.get_address_utxos(GetAddressParams { address: "some-address".to_string() })
-  .unwrap();
+  let response = murray
+    .blockchain
+    .get_address_utxos(GetAddressParams {
+      address: "some-address".to_string(),
+    })
+    .unwrap();
 
   // assert
   mock.assert();
@@ -389,8 +448,12 @@ fn get_address_utxos_should_return_error_when_problem_with_server() {
   let (_mock, murray) = sut.from("/address/some-address/txs/utxo", 400, Method::GET, &body);
 
   // act
-  let _response = murray.blockchain.get_address_utxos(GetAddressParams { address: "some-address".to_string() })
-  .unwrap();
+  let _response = murray
+    .blockchain
+    .get_address_utxos(GetAddressParams {
+      address: "some-address".to_string(),
+    })
+    .unwrap();
 }
 
 #[test]
@@ -402,6 +465,56 @@ fn get_address_utxos_should_return_error_when_body_returns_wrong_json() {
   let (_mock, murray) = sut.from("/address/some-address/txs/utxo", 200, Method::GET, &body);
 
   // act
-  let _response = murray.blockchain.get_address_utxos(GetAddressParams { address: "some-address".to_string() })
-  .unwrap();
+  let _response = murray
+    .blockchain
+    .get_address_utxos(GetAddressParams {
+      address: "some-address".to_string(),
+    })
+    .unwrap();
+}
+
+/// GET HASHRATE
+#[test]
+fn get_hashrate_should_return_successfully() {
+  // arrange
+  let expected_response =
+    fs::read_to_string("tests/mocks/get-hashrate-response.json").expect("Unable to read file");
+  let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
+  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let sut = Sut::new();
+  let (mock, murray) = sut.from("/hashrate", 200, Method::GET, &body);
+
+  // act
+  let response = murray.blockchain.get_hashrate().unwrap();
+
+  // assert
+  mock.assert();
+  assert_eq!(
+    response.hashrate.current_hashrate,
+    expected_response["currentHashrate"]
+  );
+}
+
+#[test]
+#[should_panic]
+fn get_hashrate_should_return_error_when_problem_with_server() {
+  // arrange
+  let body = "".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/hashrate", 400, Method::GET, &body);
+
+  // act
+  let _response = murray.blockchain.get_hashrate().unwrap();
+}
+
+#[test]
+#[should_panic]
+fn get_hashrate_should_return_error_when_body_returns_wrong_json() {
+  // arrange
+  let body = "wrong-return".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/hashrate", 200, Method::GET, &body);
+
+  // act
+  let _response = murray.blockchain.get_hashrate().unwrap();
 }
