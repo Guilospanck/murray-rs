@@ -1,5 +1,3 @@
-
-
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, strum::Display)]
@@ -7,12 +5,12 @@ pub enum Currency {
   BTC,
   BRL,
   SATS,
-  USD
+  USD,
 }
 
 pub struct ConvertCurrencyParams {
   pub currency: Currency,
-  pub value: i64
+  pub value: i64,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -21,11 +19,6 @@ pub struct ConvertCurrencyReturn {
   pub usd: String,
   pub brl: String,
   pub sat: String,
-}
-
-#[derive(Deserialize, Serialize)]
-pub(crate) struct ConvertCurrencyJsonData {
-  pub data: ConvertCurrencyReturn
 }
 
 #[derive(Debug, PartialEq, strum::Display)]
@@ -47,11 +40,6 @@ pub struct GetTickerReturn {
   pub symbol: String,
 }
 
-#[derive(Deserialize, Serialize)]
-pub(crate) struct GetTickerJsonData {
-  pub data: GetTickerReturn
-}
-
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Tickers {
   pub price: String,
@@ -62,10 +50,20 @@ pub struct Tickers {
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct GetTickersReturn {
-  pub tickers: Vec<Tickers>
+  pub tickers: Vec<Tickers>,
 }
 
 #[derive(Deserialize, Serialize)]
-pub(crate) struct GetTickersJsonData {
-  pub data: GetTickersReturn
+pub(super) struct ConvertCurrencyJsonData {
+  pub data: ConvertCurrencyReturn,
+}
+
+#[derive(Deserialize, Serialize)]
+pub(super) struct GetTickerJsonData {
+  pub data: GetTickerReturn,
+}
+
+#[derive(Deserialize, Serialize)]
+pub(super) struct GetTickersJsonData {
+  pub data: GetTickersReturn,
 }

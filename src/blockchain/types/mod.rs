@@ -99,61 +99,61 @@ pub struct PostTransactionResponse {
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetBlockResponseJsonData {
+pub(super) struct GetBlockResponseJsonData {
   pub data: GetBlockResponse,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetBlock2TimeResponseJsonData {
+pub(super) struct GetBlock2TimeResponseJsonData {
   pub data: GetBlock2TimeResponse,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetFeesRecommendedResponseJsonData {
+pub(super) struct GetFeesRecommendedResponseJsonData {
   pub data: GetFeesRecommendedResponse,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetFeesMempoolBlocksResponseJsonData {
+pub(super) struct GetFeesMempoolBlocksResponseJsonData {
   pub data: Vec<GetFeesMempoolBlocksResponse>,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetAddressDetailsResponseJsonData {
+pub(super) struct GetAddressDetailsResponseJsonData {
   pub data: GetAddressDetailsResponse,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetAddressTransactionsResponseJsonData {
+pub(super) struct GetAddressTransactionsResponseJsonData {
   pub data: Vec<GetAddressTransactionsResponse>,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetAddressUTXOResponseJsonData {
+pub(super) struct GetAddressUTXOResponseJsonData {
   pub data: Vec<GetAddressUTXOResponse>,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetHashrateResponseJsonData {
+pub(super) struct GetHashrateResponseJsonData {
   pub data: GetHashrateResponse,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetHealthResponseJsonData {
+pub(super) struct GetHealthResponseJsonData {
   pub data: GetHealthResponse,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetMempoolResponseJsonData {
+pub(super) struct GetMempoolResponseJsonData {
   pub data: GetMempoolResponse,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetTransactionResponseJsonData {
+pub(super) struct GetTransactionResponseJsonData {
   pub data: GetTransactionResponse,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct PostTransactionResponseJsonData {
+pub(super) struct PostTransactionResponseJsonData {
   pub data: PostTransactionResponse,
 }
