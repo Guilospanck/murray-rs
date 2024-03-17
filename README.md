@@ -1,9 +1,5 @@
-![Build Status](https://github.com/Guilospanck/murray-rs/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/Guilospanck/murray-rs/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/Guilospanck/murray-rs/graph/badge.svg?token=E87lAHhkfC)](https://codecov.io/gh/Guilospanck/murray-rs)
-<!-- [![crates.io](https://img.shields.io/crates/v/grcov.svg)](https://crates.io/crates/grcov) -->
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-# Murray-rs
+# Murray-rs [![Tests](https://github.com/Guilospanck/murray-rs/actions/workflows/tests.yml/badge.svg?branch=main&event=push)](https://github.com/Guilospanck/murray-rs/actions/workflows/tests.yml) [![codecov](https://codecov.io/gh/Guilospanck/murray-rs/graph/badge.svg?token=E87lAHhkfC)](https://codecov.io/gh/Guilospanck/murray-rs) [![crates.io](https://img.shields.io/crates/v/murray-rs.svg)](https://crates.io/crates/murray-rs) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 Murray-rs is the rust version of the comprehensive NPM package module designed for seamless integration with Murray Rothbot's suite of APIs, including Blockchain, Lightning, and Prices - [Murray JS](https://github.com/murray-rothbot/murray-js). This powerful library enables developers to quickly incorporate bitcoin data and interactions within their applications.
 
