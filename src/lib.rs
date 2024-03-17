@@ -28,11 +28,48 @@ pub struct Murray {
   pub lightning: lightning::Lightning,
 }
 
+pub struct BaseEndpoints {
+  pub blockchain_endpoint: Option<String>,
+  pub prices_endpoint: Option<String>,
+  pub lightning_endpoint: Option<String>,
+}
+
+impl Default for BaseEndpoints {
+  fn default() -> Self {
+    Self {
+      blockchain_endpoint: Some(BASE_BLOCKCHAIN_URL.to_string()),
+      prices_endpoint: Some(BASE_PRICES_URL.to_string()),
+      lightning_endpoint: Some(BASE_LIGHTNING_URL.to_string()),
+    }
+  }
+}
+
 impl Murray {
-  pub fn new() -> Self {
-    let blockchain = blockchain::Blockchain::new(BASE_BLOCKCHAIN_URL.to_string());
-    let prices = prices::Prices::new(BASE_PRICES_URL.to_string());
-    let lightning = lightning::Lightning::new(BASE_LIGHTNING_URL.to_string());
+  pub fn new(
+    BaseEndpoints {
+      blockchain_endpoint,
+      prices_endpoint,
+      lightning_endpoint,
+    }: BaseEndpoints,
+  ) -> Self {
+    let mut blockchain_url = BASE_BLOCKCHAIN_URL.to_string();
+    if let Some(url) = blockchain_endpoint {
+      blockchain_url = url
+    }
+
+    let mut prices_url = BASE_PRICES_URL.to_string();
+    if let Some(url) = prices_endpoint {
+      prices_url = url
+    }
+
+    let mut lightning_url = BASE_LIGHTNING_URL.to_string();
+    if let Some(url) = lightning_endpoint {
+      lightning_url = url
+    }
+
+    let blockchain = blockchain::Blockchain::new(blockchain_url);
+    let prices = prices::Prices::new(prices_url);
+    let lightning = lightning::Lightning::new(lightning_url);
 
     Self {
       blockchain,
@@ -44,6 +81,6 @@ impl Murray {
 
 impl Default for Murray {
   fn default() -> Self {
-    Self::new()
+    Self::new(BaseEndpoints::default())
   }
 }

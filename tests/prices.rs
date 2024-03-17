@@ -45,7 +45,7 @@ impl Sut {
       }),
     };
 
-    let mut murray = Murray::new();
+    let mut murray = Murray::default();
     murray.prices.set_base_url(self.server.base_url());
 
     (mock, murray)

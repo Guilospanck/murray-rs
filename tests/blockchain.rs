@@ -2,7 +2,8 @@ use std::fs;
 
 use httpmock::{prelude::*, Method, Mock};
 use murray_rs::{
-  GetAddressParams, GetBlockParams, GetTransactionParams, Murray, PostTransactionParams,
+  BaseEndpoints, GetAddressParams, GetBlockParams, GetTransactionParams, Murray,
+  PostTransactionParams,
 };
 use serde_json::Value;
 
@@ -47,7 +48,7 @@ impl Sut {
       }),
     };
 
-    let mut murray = Murray::new();
+    let mut murray = Murray::default();
     murray.blockchain.set_base_url(self.server.base_url());
 
     (mock, murray)
@@ -143,8 +144,8 @@ fn get_block_should_return_error_when_body_returns_wrong_json() {
 #[test]
 fn get_block2time_should_return_successfully() {
   // arrange
-  let expected_response =
-    fs::read_to_string("tests/mocks/blockchain/block2time-response.json").expect("Unable to read file");
+  let expected_response = fs::read_to_string("tests/mocks/blockchain/block2time-response.json")
+    .expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
@@ -167,8 +168,8 @@ fn get_block2time_should_return_successfully() {
 #[test]
 fn get_block2time_should_return_successfully_when_no_params() {
   // arrange
-  let expected_response =
-    fs::read_to_string("tests/mocks/blockchain/block2time-response.json").expect("Unable to read file");
+  let expected_response = fs::read_to_string("tests/mocks/blockchain/block2time-response.json")
+    .expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
@@ -228,8 +229,8 @@ fn get_block2time_should_return_error_when_body_returns_wrong_json() {
 #[test]
 fn get_fees_recommended_should_return_successfully() {
   // arrange
-  let expected_response =
-    fs::read_to_string("tests/mocks/blockchain/fees-recommended.json").expect("Unable to read file");
+  let expected_response = fs::read_to_string("tests/mocks/blockchain/fees-recommended.json")
+    .expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
@@ -274,8 +275,8 @@ fn get_fees_recommended_should_return_error_when_body_returns_wrong_json() {
 #[test]
 fn get_fees_mempool_blocks_should_return_successfully() {
   // arrange
-  let expected_response =
-    fs::read_to_string("tests/mocks/blockchain/fees-mempool-blocks.json").expect("Unable to read file");
+  let expected_response = fs::read_to_string("tests/mocks/blockchain/fees-mempool-blocks.json")
+    .expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
@@ -320,8 +321,8 @@ fn get_fees_mempool_blocks_should_return_error_when_body_returns_wrong_json() {
 #[test]
 fn get_address_details_should_return_successfully() {
   // arrange
-  let expected_response =
-    fs::read_to_string("tests/mocks/blockchain/get-address-details.json").expect("Unable to read file");
+  let expected_response = fs::read_to_string("tests/mocks/blockchain/get-address-details.json")
+    .expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
@@ -442,8 +443,8 @@ fn get_address_transactions_should_return_error_when_body_returns_wrong_json() {
 #[test]
 fn get_address_utxos_should_return_successfully() {
   // arrange
-  let expected_response =
-    fs::read_to_string("tests/mocks/blockchain/get-address-utxos.json").expect("Unable to read file");
+  let expected_response = fs::read_to_string("tests/mocks/blockchain/get-address-utxos.json")
+    .expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
@@ -518,8 +519,8 @@ fn get_address_utxos_should_return_error_when_body_returns_wrong_json() {
 #[test]
 fn get_hashrate_should_return_successfully() {
   // arrange
-  let expected_response =
-    fs::read_to_string("tests/mocks/blockchain/get-hashrate-response.json").expect("Unable to read file");
+  let expected_response = fs::read_to_string("tests/mocks/blockchain/get-hashrate-response.json")
+    .expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
@@ -711,8 +712,8 @@ fn get_transaction_should_return_error_when_body_returns_wrong_json() {
 #[test]
 fn post_transaction_should_return_successfully() {
   // arrange
-  let expected_response =
-    fs::read_to_string("tests/mocks/blockchain/post-transaction.json").expect("Unable to read file");
+  let expected_response = fs::read_to_string("tests/mocks/blockchain/post-transaction.json")
+    .expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
