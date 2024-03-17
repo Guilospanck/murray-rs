@@ -8,7 +8,7 @@ check:
 
 .PHONY: test
 test:
-	cargo test
+	cargo test --tests
 
 ##! Tag and push it. Example: ❯ make tag-and-push new_tag=v0.0.2
 .PHONY: tag-and-push

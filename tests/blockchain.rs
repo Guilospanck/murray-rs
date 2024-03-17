@@ -2,8 +2,7 @@ use std::fs;
 
 use httpmock::{prelude::*, Method, Mock};
 use murray_rs::{
-  BaseEndpoints, GetAddressParams, GetBlockParams, GetTransactionParams, Murray,
-  PostTransactionParams,
+  GetAddressParams, GetBlockParams, GetTransactionParams, Murray, PostTransactionParams,
 };
 use serde_json::Value;
 
