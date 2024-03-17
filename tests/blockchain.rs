@@ -561,3 +561,46 @@ fn get_health_should_return_error_when_body_returns_wrong_json() {
   // act
   let _response = murray.blockchain.get_health().unwrap();
 }
+
+/// GET MEMPOOL
+#[test]
+fn get_mempool_should_return_successfully() {
+  // arrange
+  let expected_response =
+    fs::read_to_string("tests/mocks/get-mempool.json").expect("Unable to read file");
+  let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
+  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let sut = Sut::new();
+  let (mock, murray) = sut.from("/mempool", 200, Method::GET, &body);
+
+  // act
+  let response = murray.blockchain.get_mempool().unwrap();
+
+  // assert
+  mock.assert();
+  assert_eq!(response.mempool_response.total_fee, expected_response["total_fee"]);
+}
+
+#[test]
+#[should_panic]
+fn get_mempool_should_return_error_when_problem_with_server() {
+  // arrange
+  let body = "".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/mempool", 400, Method::GET, &body);
+
+  // act
+  let _response = murray.blockchain.get_mempool().unwrap();
+}
+
+#[test]
+#[should_panic]
+fn get_mempool_should_return_error_when_body_returns_wrong_json() {
+  // arrange
+  let body = "wrong-return".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/mempool", 200, Method::GET, &body);
+
+  // act
+  let _response = murray.blockchain.get_mempool().unwrap();
+}
