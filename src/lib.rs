@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+
 mod blockchain;
 mod lightning;
 mod prices;
@@ -5,6 +7,16 @@ mod prices;
 pub use blockchain::types::*;
 pub use prices::types::*;
 pub use lightning::types::*;
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetHealthResponse {
+  pub message: String
+}
+
+#[derive(Deserialize, Serialize)]
+struct GetHealthResponseJsonData {
+  pub data: GetHealthResponse,
+}
 
 const BASE_BLOCKCHAIN_URL: &str = "http://blockchain.murrayrothbot.com";
 const BASE_PRICES_URL: &str = "http://prices.murrayrothbot.com";

@@ -7,13 +7,15 @@ use murray_rs::{
 fn main() {
   let mut murray = Murray::new();
   // /** Prices */
-  // murray.prices.set_base_url("http://localhost:3000".to_string());
+  murray.prices.set_base_url("http://localhost:3000".to_string());
   // let a = murray.prices.convert_currency(ConvertCurrencyParams { currency: Currency::BRL, value: 100 });
   // println!("{:?}", a.unwrap());
   // let b = murray.prices.get_ticker(GetTickerParams{symbol: Symbol::BTCUSD});
   // println!("{:?}", b.unwrap());
   // let c = murray.prices.get_tickers(GetTickerParams{symbol: Symbol::BTCUSD});
   // println!("{:?}", c.unwrap());
+  let d = murray.prices.get_health();
+  println!("{:?}", d.unwrap());
 
   // Lightning
   murray
@@ -35,7 +37,7 @@ fn main() {
   println!("{:?}", d.unwrap());
 
   // Blockchain
-  // murray.blockchain.set_base_url("http://localhost:3000".to_string());
+  murray.blockchain.set_base_url("http://localhost:3000".to_string());
 
   // let a = blockchain::get_block(GetBlockParams {
   //   hash: Some("34/$#%sdf".to_string()),
@@ -67,8 +69,8 @@ fn main() {
   // let h = murray.blockchain.get_hashrate();
   // println!("{:?}\n", h.unwrap());
 
-  // let i = blockchain::get_health();
-  // println!("{:?}\n", i.unwrap());
+  let i = murray.blockchain.get_health();
+  println!("{:?}\n", i.unwrap());
 
   // let j = blockchain::get_mempool();
   // println!("{:?}\n", j.unwrap());

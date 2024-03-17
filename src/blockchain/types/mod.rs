@@ -77,11 +77,6 @@ pub struct GetHashrateResponse {
 }
 
 #[derive(Deserialize, Serialize, Debug)]
-pub struct GetHealthResponse {
-  pub message: String
-}
-
-#[derive(Deserialize, Serialize, Debug)]
 pub struct GetMempoolResponse {
   #[serde(flatten)]
   pub mempool_response: MempoolData
@@ -136,11 +131,6 @@ pub(super) struct GetAddressUTXOResponseJsonData {
 #[derive(Deserialize, Serialize)]
 pub(super) struct GetHashrateResponseJsonData {
   pub data: GetHashrateResponse,
-}
-
-#[derive(Deserialize, Serialize)]
-pub(super) struct GetHealthResponseJsonData {
-  pub data: GetHealthResponse,
 }
 
 #[derive(Deserialize, Serialize)]

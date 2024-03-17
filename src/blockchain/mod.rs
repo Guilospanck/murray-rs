@@ -3,14 +3,15 @@ use std::result;
 
 use reqwest::{self, Client};
 
+use crate::{GetHealthResponse, GetHealthResponseJsonData};
+
 use self::types::{
   GetAddressDetailsResponse, GetAddressDetailsResponseJsonData, GetAddressParams,
   GetAddressTransactionsResponse, GetAddressTransactionsResponseJsonData, GetAddressUTXOResponse,
   GetAddressUTXOResponseJsonData, GetBlock2TimeResponse, GetBlock2TimeResponseJsonData,
   GetBlockParams, GetBlockResponse, GetBlockResponseJsonData, GetFeesMempoolBlocksResponse,
   GetFeesMempoolBlocksResponseJsonData, GetFeesRecommendedResponse,
-  GetFeesRecommendedResponseJsonData, GetHashrateResponse, GetHashrateResponseJsonData,
-  GetHealthResponse, GetHealthResponseJsonData, GetMempoolResponse, GetMempoolResponseJsonData,
+  GetFeesRecommendedResponseJsonData, GetHashrateResponse, GetHashrateResponseJsonData, GetMempoolResponse, GetMempoolResponseJsonData,
   GetTransactionParams, GetTransactionResponse, GetTransactionResponseJsonData,
   PostTransactionParams, PostTransactionResponse, PostTransactionResponseJsonData,
 };

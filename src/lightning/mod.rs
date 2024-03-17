@@ -3,10 +3,11 @@ use std::result;
 
 use reqwest::{self, Client};
 
+use crate::{GetHealthResponse, GetHealthResponseJsonData};
+
 use self::types::{
-  node_details::NodeData, statistics::Statistics, top_nodes::TopData, GetHealthResponse,
-  GetHealthResponseJsonData, GetNodeDetailsParams, NodeResponseJsonData, StatisticsJsonData,
-  TopJsonData,
+  node_details::NodeData, statistics::Statistics, top_nodes::TopData, GetNodeDetailsParams,
+  NodeResponseJsonData, StatisticsJsonData, TopJsonData,
 };
 
 /// [`Lightning`] error
