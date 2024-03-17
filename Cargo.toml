@@ -1,6 +1,6 @@
 [package]
 name = "murray-rs"
-description = "A rust implementation of Murray"
+description = "murray-rs is a comprehensive crate designed for seamless integration with Murray Rothbot's suite of APIs, including Blockchain, Lightning, and Prices"
 version = "0.1.0"
 authors = ["Guilherme Pereira <guilospanck@protonmail.com>"]
 edition = "2021"
