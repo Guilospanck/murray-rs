@@ -4,8 +4,9 @@ use std::result;
 use reqwest::{self, Client};
 
 use self::types::{
-  node_details::NodeData, statistics::Statistics, top_nodes::TopData, GetNodeDetailsParams,
-  NodeResponseJsonData, StatisticsJsonData, TopJsonData,
+  node_details::NodeData, statistics::Statistics, top_nodes::TopData, GetHealthResponse,
+  GetHealthResponseJsonData, GetNodeDetailsParams, NodeResponseJsonData, StatisticsJsonData,
+  TopJsonData,
 };
 
 /// [`Lightning`] error
@@ -101,6 +102,28 @@ impl Lightning {
 
     let data = match server_response {
       Ok(resp) => match resp.json::<TopJsonData>().await {
+        Ok(r) => r.data,
+        Err(e) => return Err(LightningError::JSONParseError(e.to_string())),
+      },
+      Err(e) => return Err(LightningError::APIError(e.to_string())),
+    };
+
+    Ok(data)
+  }
+
+  #[tokio::main]
+  pub async fn get_health(&self) -> Result<GetHealthResponse> {
+    let url = format!("{}/health", self.base_url);
+
+    let client = self.client.get(url).header("Accept", "application/json");
+
+    let server_response = match client.send().await {
+      Ok(resp) => resp.error_for_status(),
+      Err(e) => return Err(LightningError::BadRequest(e.to_string())),
+    };
+
+    let data = match server_response {
+      Ok(resp) => match resp.json::<GetHealthResponseJsonData>().await {
         Ok(r) => r.data,
         Err(e) => return Err(LightningError::JSONParseError(e.to_string())),
       },

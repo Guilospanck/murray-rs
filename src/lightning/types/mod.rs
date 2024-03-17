@@ -13,6 +13,11 @@ pub struct GetNodeDetailsParams {
 }
 
 #[derive(Deserialize, Serialize, Debug)]
+pub struct GetHealthResponse {
+  pub message: String
+}
+
+#[derive(Deserialize, Serialize, Debug)]
 pub struct NodeResponseJsonData {
   pub data: NodeData,
 }
@@ -25,4 +30,9 @@ pub struct StatisticsJsonData {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct TopJsonData {
   pub data: TopData,
+}
+
+#[derive(Deserialize, Serialize)]
+pub(super) struct GetHealthResponseJsonData {
+  pub data: GetHealthResponse,
 }
