@@ -1,7 +1,7 @@
 use std::fs;
 
 use httpmock::{prelude::*, Method, Mock};
-use murray_rs::{ConvertCurrencyParams, Murray};
+use murray_rs::{ConvertCurrencyParams, GetTickerParams, Murray};
 use serde_json::Value;
 
 struct Sut {
@@ -109,6 +109,64 @@ fn convert_currency_should_return_error_when_body_returns_wrong_json() {
     .convert_currency(ConvertCurrencyParams {
       currency: murray_rs::Currency::BRL,
       value: 100,
+    })
+    .unwrap();
+}
+
+/// CONVERT CURRENCY
+#[test]
+fn get_ticker_should_return_successfully() {
+  // arrange
+  let expected_response =
+    fs::read_to_string("tests/mocks/prices/get-ticker.json").expect("Unable to read file");
+  let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
+  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let sut = Sut::new();
+  let (mock, murray) = sut.from("/ticker", 200, Method::GET, "", &body);
+
+  // act
+  let response = murray
+    .prices
+    .get_ticker(GetTickerParams {
+      symbol: murray_rs::Symbol::BTCBRL
+    })
+    .unwrap();
+
+  // assert
+  mock.assert();
+  assert_eq!(response.price, expected_response["price"]);
+}
+
+#[test]
+#[should_panic]
+fn get_ticker_should_return_error_when_problem_with_server() {
+  // arrange
+  let body = "".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/ticker", 400, Method::GET, "", &body);
+
+  // act
+  let _response = murray
+    .prices
+    .get_ticker(GetTickerParams {
+      symbol: murray_rs::Symbol::BTCBRL
+    })
+    .unwrap();
+}
+
+#[test]
+#[should_panic]
+fn get_ticker_should_return_error_when_body_returns_wrong_json() {
+  // arrange
+  let body = "wrong-return".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/ticker", 200, Method::GET, "", &body);
+
+  // act
+  let _response = murray
+    .prices
+    .get_ticker(GetTickerParams {
+      symbol: murray_rs::Symbol::BTCBRL
     })
     .unwrap();
 }
