@@ -1,0 +1,36 @@
+{
+  "latest": {
+    "id": 1,
+    "added": "2022-03-17T12:00:00Z",
+    "channel_count": 100,
+    "node_count": 50,
+    "total_capacity": 100000,
+    "tor_nodes": 25,
+    "clearnet_nodes": 25,
+    "unannounced_nodes": 0,
+    "avg_capacity": 2000,
+    "avg_fee_rate": 5000,
+    "avg_base_fee_mtokens": 10000,
+    "med_capacity": 1500,
+    "med_fee_rate": 4000,
+    "med_base_fee_mtokens": 8000,
+    "clearnet_tor_nodes": 20
+  },
+  "previous": {
+    "id": 2,
+    "added": "2022-03-16T12:00:00Z",
+    "channel_count": 90,
+    "node_count": 45,
+    "total_capacity": 95000,
+    "tor_nodes": 20,
+    "clearnet_nodes": 25,
+    "unannounced_nodes": 5,
+    "avg_capacity": 1800,
+    "avg_fee_rate": 4800,
+    "avg_base_fee_mtokens": 9000,
+    "med_capacity": 1400,
+    "med_fee_rate": 3800,
+    "med_base_fee_mtokens": 7500,
+    "clearnet_tor_nodes": 15
+  }
+}

@@ -1,18 +1,31 @@
 #![allow(unused_doc_comments)]
 
-
-use murray_rs::{ConvertCurrencyParams, Currency, GetTickerParams, Murray, Symbol};
+use murray_rs::{
+  ConvertCurrencyParams, Currency, GetNodeDetailsParams, GetTickerParams, Murray, Symbol,
+};
 
 fn main() {
   let mut murray = Murray::new();
-  /** Prices */
-  murray.prices.set_base_url("http://localhost:3000".to_string());
-  let a = murray.prices.convert_currency(ConvertCurrencyParams { currency: Currency::BRL, value: 100 });
-  println!("{:?}", a.unwrap());
-  let b = murray.prices.get_ticker(GetTickerParams{symbol: Symbol::BTCUSD});
+  // /** Prices */
+  // murray.prices.set_base_url("http://localhost:3000".to_string());
+  // let a = murray.prices.convert_currency(ConvertCurrencyParams { currency: Currency::BRL, value: 100 });
+  // println!("{:?}", a.unwrap());
+  // let b = murray.prices.get_ticker(GetTickerParams{symbol: Symbol::BTCUSD});
+  // println!("{:?}", b.unwrap());
+  // let c = murray.prices.get_tickers(GetTickerParams{symbol: Symbol::BTCUSD});
+  // println!("{:?}", c.unwrap());
+
+  // Lightning
+  murray
+    .lightning
+    .set_base_url("http://localhost:3000".to_string());
+  // let a = murray.lightning.get_node_details(GetNodeDetailsParams {
+  //   public_key: "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f".to_string(),
+  // });
+  // println!("{:?}", a.unwrap());
+
+  let b = murray.lightning.get_statistics();
   println!("{:?}", b.unwrap());
-  let c = murray.prices.get_tickers(GetTickerParams{symbol: Symbol::BTCUSD});
-  println!("{:?}", c.unwrap());
 
   // Blockchain
   // murray.blockchain.set_base_url("http://localhost:3000".to_string());
