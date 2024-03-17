@@ -1,0 +1,18 @@
+{
+  "tickers": [
+    {
+      "price": "339139.00000000",
+      "change24h": "-1.452",
+      "source": "Binance",
+      "symbol": "BTCBRL"
+    },
+    { "price": "67113.83", "source": "Coinbase", "symbol": "BRL" },
+    { "price": "329094.6", "source": "KuCoin", "symbol": "BTC-BRL" },
+    { "price": "339221", "source": "Bitget", "symbol": "BTCBRL" },
+    {
+      "price": "339282.52153926",
+      "source": "Mercado Bitcoin",
+      "symbol": "BTCBRL"
+    }
+  ]
+}

@@ -113,7 +113,7 @@ fn convert_currency_should_return_error_when_body_returns_wrong_json() {
     .unwrap();
 }
 
-/// CONVERT CURRENCY
+/// GET TICKER
 #[test]
 fn get_ticker_should_return_successfully() {
   // arrange
@@ -166,6 +166,64 @@ fn get_ticker_should_return_error_when_body_returns_wrong_json() {
   let _response = murray
     .prices
     .get_ticker(GetTickerParams {
+      symbol: murray_rs::Symbol::BTCBRL
+    })
+    .unwrap();
+}
+
+/// GET TICKERS
+#[test]
+fn get_tickers_should_return_successfully() {
+  // arrange
+  let expected_response =
+    fs::read_to_string("tests/mocks/prices/get-tickers.json").expect("Unable to read file");
+  let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
+  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let sut = Sut::new();
+  let (mock, murray) = sut.from("/tickers", 200, Method::GET, "", &body);
+
+  // act
+  let response = murray
+    .prices
+    .get_tickers(GetTickerParams {
+      symbol: murray_rs::Symbol::BTCBRL
+    })
+    .unwrap();
+
+  // assert
+  mock.assert();
+  assert_eq!(response.tickers[0].price, expected_response["tickers"][0]["price"]);
+}
+
+#[test]
+#[should_panic]
+fn get_tickers_should_return_error_when_problem_with_server() {
+  // arrange
+  let body = "".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/tickers", 400, Method::GET, "", &body);
+
+  // act
+  let _response = murray
+    .prices
+    .get_tickers(GetTickerParams {
+      symbol: murray_rs::Symbol::BTCBRL
+    })
+    .unwrap();
+}
+
+#[test]
+#[should_panic]
+fn get_tickers_should_return_error_when_body_returns_wrong_json() {
+  // arrange
+  let body = "wrong-return".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/tickers", 200, Method::GET, "", &body);
+
+  // act
+  let _response = murray
+    .prices
+    .get_tickers(GetTickerParams {
       symbol: murray_rs::Symbol::BTCBRL
     })
     .unwrap();
