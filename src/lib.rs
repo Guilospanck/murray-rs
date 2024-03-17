@@ -5,12 +5,12 @@ mod lightning;
 mod prices;
 
 pub use blockchain::types::*;
-pub use prices::types::*;
 pub use lightning::types::*;
+pub use prices::types::*;
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct GetHealthResponse {
-  pub message: String
+  pub message: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -39,5 +39,11 @@ impl Murray {
       prices,
       lightning,
     }
+  }
+}
+
+impl Default for Murray {
+  fn default() -> Self {
+    Self::new()
   }
 }

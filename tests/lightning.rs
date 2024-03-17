@@ -48,7 +48,7 @@ impl Sut {
     let mut murray = Murray::new();
     murray.lightning.set_base_url(self.server.base_url());
 
-    return (mock, murray);
+    (mock, murray)
   }
 }
 
@@ -59,7 +59,7 @@ fn get_node_details_should_return_successfully() {
   let expected_response =
     fs::read_to_string("tests/mocks/lightning/node-details.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
-  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let pub_key_param = String::from("some-pubkey");
   let sut = Sut::new();
   let (mock, murray) = sut.from(
@@ -114,7 +114,7 @@ fn get_health_should_return_successfully() {
   let expected_response =
     fs::read_to_string("tests/mocks/lightning/get-health.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
-  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
   let (mock, murray) = sut.from("/health", 200, Method::GET, "", &body);
 
@@ -157,7 +157,7 @@ fn get_statistics_should_return_successfully() {
   let expected_response =
     fs::read_to_string("tests/mocks/lightning/statistics.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
-  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
   let (mock, murray) = sut.from("/statistics", 200, Method::GET, "", &body);
 
@@ -201,7 +201,7 @@ fn get_top_nodes_should_return_successfully() {
   let expected_response =
     fs::read_to_string("tests/mocks/lightning/top-nodes.json").expect("Unable to read file");
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
-  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let body = format!(r#"{{"data":  {}}}"#, expected_response);
   let sut = Sut::new();
   let (mock, murray) = sut.from("/top", 200, Method::GET, "", &body);
 
