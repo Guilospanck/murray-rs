@@ -47,7 +47,7 @@ pub struct Transaction {
   pub vout: Vec<TransactionOutput>,
   pub size: u32,
   pub weight: u32,
-  pub sigops: u32,
+  pub sigops: Option<u32>,
   pub fee: u32,
   pub status: TransactionStatus,
 }
