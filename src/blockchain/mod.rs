@@ -15,9 +15,9 @@ use self::types::{
   PostTransactionParams, PostTransactionResponse, PostTransactionResponseJsonData,
 };
 
-/// [`Price`] error
+/// [`Blockchain`] error
 #[derive(thiserror::Error, Debug)]
-pub enum PriceError {
+pub enum BlockchainError {
   #[error("Invalid URL params: `{0}`")]
   InvalidURLParams(String),
   #[error("Bad request: `{0}`")]
@@ -28,7 +28,7 @@ pub enum PriceError {
   JSONParseError(String),
 }
 
-type Result<T> = result::Result<T, PriceError>;
+type Result<T> = result::Result<T, BlockchainError>;
 
 pub struct Blockchain {
   base_url: String,
@@ -67,22 +67,22 @@ impl Blockchain {
 
     let url = match reqwest::Url::parse_with_params(&url, &params) {
       Ok(url) => url,
-      Err(e) => return Err(PriceError::InvalidURLParams(e.to_string())),
+      Err(e) => return Err(BlockchainError::InvalidURLParams(e.to_string())),
     };
 
     let client = self.client.get(url).header("Accept", "application/json");
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetBlockResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
@@ -107,22 +107,22 @@ impl Blockchain {
 
     let url = match reqwest::Url::parse_with_params(&url, &params) {
       Ok(url) => url,
-      Err(e) => return Err(PriceError::InvalidURLParams(e.to_string())),
+      Err(e) => return Err(BlockchainError::InvalidURLParams(e.to_string())),
     };
 
     let client = self.client.get(url).header("Accept", "application/json");
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetBlock2TimeResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
@@ -136,15 +136,15 @@ impl Blockchain {
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetFeesRecommendedResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
@@ -158,15 +158,15 @@ impl Blockchain {
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetFeesMempoolBlocksResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
@@ -183,15 +183,15 @@ impl Blockchain {
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetAddressDetailsResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
@@ -208,15 +208,15 @@ impl Blockchain {
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetAddressTransactionsResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
@@ -233,15 +233,15 @@ impl Blockchain {
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetAddressUTXOResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     Ok(data)
@@ -255,15 +255,15 @@ impl Blockchain {
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetHashrateResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
@@ -277,15 +277,15 @@ impl Blockchain {
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetHealthResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
@@ -299,15 +299,15 @@ impl Blockchain {
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetMempoolResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
@@ -324,15 +324,15 @@ impl Blockchain {
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(resp) => match resp.json::<GetTransactionResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
@@ -355,15 +355,15 @@ impl Blockchain {
 
     let server_response = match client.send().await {
       Ok(resp) => resp.error_for_status(),
-      Err(e) => return Err(PriceError::BadRequest(e.to_string())),
+      Err(e) => return Err(BlockchainError::BadRequest(e.to_string())),
     };
 
     let data = match server_response {
       Ok(res) => match res.json::<PostTransactionResponseJsonData>().await {
         Ok(r) => r.data,
-        Err(e) => return Err(PriceError::JSONParseError(e.to_string())),
+        Err(e) => return Err(BlockchainError::JSONParseError(e.to_string())),
       },
-      Err(e) => return Err(PriceError::APIError(e.to_string())),
+      Err(e) => return Err(BlockchainError::APIError(e.to_string())),
     };
 
     Ok(data)
