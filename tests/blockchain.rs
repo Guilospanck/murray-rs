@@ -1,7 +1,7 @@
 use std::fs;
 
 use httpmock::{prelude::*, Method, Mock};
-use murray_rs::{GetAddressParams, GetBlockParams, Murray};
+use murray_rs::{GetAddressParams, GetBlockParams, GetTransactionParams, Murray};
 use serde_json::Value;
 
 struct Sut {
@@ -578,7 +578,10 @@ fn get_mempool_should_return_successfully() {
 
   // assert
   mock.assert();
-  assert_eq!(response.mempool_response.total_fee, expected_response["total_fee"]);
+  assert_eq!(
+    response.mempool_response.total_fee,
+    expected_response["total_fee"]
+  );
 }
 
 #[test]
@@ -603,4 +606,62 @@ fn get_mempool_should_return_error_when_body_returns_wrong_json() {
 
   // act
   let _response = murray.blockchain.get_mempool().unwrap();
+}
+
+/// GET TRANSACTION
+#[test]
+fn get_transaction_should_return_successfully() {
+  // arrange
+  let expected_response =
+    fs::read_to_string("tests/mocks/get-transaction.json").expect("Unable to read file");
+  let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
+  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let sut = Sut::new();
+  let (mock, murray) = sut.from("/tx/some-tx-id", 200, Method::GET, &body);
+
+  // act
+  let response = murray
+    .blockchain
+    .get_transaction(GetTransactionParams {
+      txid: "some-tx-id".to_string(),
+    })
+    .unwrap();
+
+  // assert
+  mock.assert();
+  assert_eq!(response.transaction.txid, expected_response["txid"]);
+}
+
+#[test]
+#[should_panic]
+fn get_transaction_should_return_error_when_problem_with_server() {
+  // arrange
+  let body = "".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/tx/some-tx-id", 400, Method::GET, &body);
+
+  // act
+  let _response = murray
+    .blockchain
+    .get_transaction(GetTransactionParams {
+      txid: "some-tx-id".to_string(),
+    })
+    .unwrap();
+}
+
+#[test]
+#[should_panic]
+fn get_transaction_should_return_error_when_body_returns_wrong_json() {
+  // arrange
+  let body = "wrong-return".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/tx/some-tx-id", 200, Method::GET, &body);
+
+  // act
+  let _response = murray
+    .blockchain
+    .get_transaction(GetTransactionParams {
+      txid: "some-tx-id".to_string(),
+    })
+    .unwrap();
 }
