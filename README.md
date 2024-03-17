@@ -77,10 +77,10 @@ fn main() -> std::result::Result<(), PriceError> {
 Customize endpoints for each API to suit your specific needs:
 
 ```rs
-use murray_rs::{Murray, BaseEndpoints};
+use murray_rs::{Murray, BaseEndpointsParams};
 
 fn main() {
-  let murray = Murray::new(BaseEndpoints {
+  let murray = Murray::new(BaseEndpointsParams {
     blockchain_endpoint: Some("https://your-custom-domain.com/".to_string()),
     prices_endpoint: Some("https://your-custom-domain.com/".to_string()),
     lightning_endpoint: Some("https://your-custom-domain.com/".to_string()),

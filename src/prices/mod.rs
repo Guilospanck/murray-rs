@@ -26,10 +26,15 @@ impl Prices {
     }
   }
 
+  /// Change the base url on the fly for the [`Prices`] calls.
+  /// 
   pub fn set_base_url(&mut self, base_url: String) {
     self.base_url = base_url;
   }
 
+  /// Converts a value - in a [`Currency`](self::types::Currency) -
+  /// into other currencies defined by [`ConvertCurrencyReturn`](self::types::ConvertCurrencyReturn).
+  ///
   #[tokio::main]
   pub async fn convert_currency(
     &self,
@@ -64,6 +69,8 @@ impl Prices {
     Ok(data)
   }
 
+  /// Get a ticker information of a trading pair ([`Symbol`](self::types::Symbol))
+  /// from a specific exchange.
   #[tokio::main]
   pub async fn get_ticker(
     &self,
@@ -95,6 +102,8 @@ impl Prices {
     Ok(data)
   }
 
+  /// Get tickers information of a trading pair ([`Symbol`](self::types::Symbol))
+  /// from different exchanges.
   #[tokio::main]
   pub async fn get_tickers(
     &self,
@@ -126,6 +135,11 @@ impl Prices {
     Ok(data)
   }
 
+  /// Get simple information regarding the health
+  /// of the prices service.
+  /// 
+  /// More info at [service-prices](https://github.com/murray-rothbot/service-prices).
+  /// 
   #[tokio::main]
   pub async fn get_health(&self) -> Result<GetHealthResponse> {
     let url = format!("{}/health", self.base_url);
