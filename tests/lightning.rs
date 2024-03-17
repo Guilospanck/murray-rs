@@ -149,3 +149,46 @@ fn get_health_should_return_error_when_body_returns_wrong_json() {
   // act
   let _response = murray.lightning.get_health().unwrap();
 }
+
+/// GET STATISTICS
+#[test]
+fn get_statistics_should_return_successfully() {
+  // arrange
+  let expected_response =
+    fs::read_to_string("tests/mocks/lightning/statistics.json").expect("Unable to read file");
+  let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
+  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let sut = Sut::new();
+  let (mock, murray) = sut.from("/statistics", 200, Method::GET, "", &body);
+
+  // act
+  let response = murray.lightning.get_statistics().unwrap();
+
+  // assert
+  mock.assert();
+  assert_eq!(response.latest.id, expected_response["latest"]["id"]);
+}
+
+#[test]
+#[should_panic]
+fn get_statistics_should_return_error_when_problem_with_server() {
+  // arrange
+  let body = "".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/statistics", 400, Method::GET, "", &body);
+
+  // act
+  let _response = murray.lightning.get_statistics().unwrap();
+}
+
+#[test]
+#[should_panic]
+fn get_statistics_should_return_error_when_body_returns_wrong_json() {
+  // arrange
+  let body = "wrong-return".to_string();
+  let sut = Sut::new();
+  let (_mock, murray) = sut.from("/statistics", 200, Method::GET, "", &body);
+
+  // act
+  let _response = murray.lightning.get_statistics().unwrap();
+}
