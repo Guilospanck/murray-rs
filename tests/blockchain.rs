@@ -1,7 +1,9 @@
 use std::fs;
 
 use httpmock::{prelude::*, Method, Mock};
-use murray_rs::{GetAddressParams, GetBlockParams, GetTransactionParams, Murray};
+use murray_rs::{
+  GetAddressParams, GetBlockParams, GetTransactionParams, Murray, PostTransactionParams,
+};
 use serde_json::Value;
 
 struct Sut {
@@ -14,15 +16,36 @@ impl Sut {
     Sut { server }
   }
 
-  fn from(&self, path: &str, status: u16, method: Method, body: &str) -> (Mock, Murray) {
+  fn from(
+    &self,
+    path: &str,
+    status: u16,
+    method: Method,
+    req_body: &str,
+    res_body: &str,
+  ) -> (Mock, Murray) {
     // Create a mock on the server.
-    let mock = self.server.mock(|when, then| {
-      when.method(method).path(path);
-      then
-        .status(status)
-        .header("content-type", "application/json")
-        .body(body);
-    });
+    let mock = match method {
+      Method::GET
+      | Method::HEAD
+      | Method::DELETE
+      | Method::OPTIONS
+      | Method::TRACE
+      | Method::CONNECT => self.server.mock(|when, then| {
+        when.method(method).path(path);
+        then
+          .status(status)
+          .header("content-type", "application/json")
+          .body(res_body);
+      }),
+      Method::POST | Method::PATCH | Method::PUT => self.server.mock(|when, then| {
+        when.method(method).path(path).body(req_body);
+        then
+          .status(status)
+          .header("content-type", "application/json")
+          .body(res_body);
+      }),
+    };
 
     let mut murray = Murray::new();
     murray.blockchain.set_base_url(self.server.base_url());
@@ -40,7 +63,7 @@ fn get_block_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/block", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/block", 200, Method::GET, "", &body);
 
   // act
   let response = murray
@@ -64,7 +87,7 @@ fn get_block_should_return_successfully_when_no_params() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/block", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/block", 200, Method::GET, "", &body);
 
   // act
   let response = murray
@@ -86,7 +109,7 @@ fn get_block_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/block", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from("/block", 400, Method::GET, "", &body);
 
   // act
   let _response = murray
@@ -104,7 +127,7 @@ fn get_block_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/block", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from("/block", 200, Method::GET, "", &body);
 
   // act
   let _response = murray
@@ -125,7 +148,7 @@ fn get_block2time_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/block2time", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/block2time", 200, Method::GET, "", &body);
 
   // act
   let response = murray
@@ -149,7 +172,7 @@ fn get_block2time_should_return_successfully_when_no_params() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/block2time", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/block2time", 200, Method::GET, "", &body);
 
   // act
   let response = murray
@@ -171,7 +194,7 @@ fn get_block2time_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/block2time", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from("/block2time", 400, Method::GET, "", &body);
 
   // act
   let _response = murray
@@ -189,7 +212,7 @@ fn get_block2time_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/block2time", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from("/block2time", 200, Method::GET, "", &body);
 
   // act
   let _response = murray
@@ -210,7 +233,7 @@ fn get_fees_recommended_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/fees/recommended", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/fees/recommended", 200, Method::GET, "", &body);
 
   // act
   let response = murray.blockchain.get_fees_recommended().unwrap();
@@ -229,7 +252,7 @@ fn get_fees_recommended_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/fees/recommended", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from("/fees/recommended", 400, Method::GET, "", &body);
 
   // act
   let _response = murray.blockchain.get_fees_recommended().unwrap();
@@ -241,7 +264,7 @@ fn get_fees_recommended_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/fees/recommended", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from("/fees/recommended", 200, Method::GET, "", &body);
 
   // act
   let _response = murray.blockchain.get_fees_recommended().unwrap();
@@ -256,7 +279,7 @@ fn get_fees_mempool_blocks_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/fees/mempool-blocks", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/fees/mempool-blocks", 200, Method::GET, "", &body);
 
   // act
   let response = murray.blockchain.get_fees_mempool_blocks().unwrap();
@@ -275,7 +298,7 @@ fn get_fees_mempool_blocks_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/fees/mempool-blocks", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from("/fees/mempool-blocks", 400, Method::GET, "", &body);
 
   // act
   let _response = murray.blockchain.get_fees_mempool_blocks().unwrap();
@@ -287,7 +310,7 @@ fn get_fees_mempool_blocks_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/fees/mempool-blocks", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from("/fees/mempool-blocks", 200, Method::GET, "", &body);
 
   // act
   let _response = murray.blockchain.get_fees_mempool_blocks().unwrap();
@@ -302,7 +325,7 @@ fn get_address_details_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/address/some-address", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/address/some-address", 200, Method::GET, "", &body);
 
   // act
   let response = murray
@@ -326,7 +349,7 @@ fn get_address_details_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/address/some-address", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from("/address/some-address", 400, Method::GET, "", &body);
 
   // act
   let _response = murray
@@ -343,7 +366,7 @@ fn get_address_details_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/address/some-address", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from("/address/some-address", 200, Method::GET, "", &body);
 
   // act
   let _response = murray
@@ -363,7 +386,7 @@ fn get_address_transactions_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/address/some-address/txs", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/address/some-address/txs", 200, Method::GET, "", &body);
 
   // act
   let response = murray
@@ -387,7 +410,7 @@ fn get_address_transactions_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/address/some-address/txs", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from("/address/some-address/txs", 400, Method::GET, "", &body);
 
   // act
   let _response = murray
@@ -404,7 +427,7 @@ fn get_address_transactions_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/address/some-address/txs", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from("/address/some-address/txs", 200, Method::GET, "", &body);
 
   // act
   let _response = murray
@@ -424,7 +447,13 @@ fn get_address_utxos_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/address/some-address/txs/utxo", 200, Method::GET, &body);
+  let (mock, murray) = sut.from(
+    "/address/some-address/txs/utxo",
+    200,
+    Method::GET,
+    "",
+    &body,
+  );
 
   // act
   let response = murray
@@ -445,7 +474,13 @@ fn get_address_utxos_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/address/some-address/txs/utxo", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from(
+    "/address/some-address/txs/utxo",
+    400,
+    Method::GET,
+    "",
+    &body,
+  );
 
   // act
   let _response = murray
@@ -462,7 +497,13 @@ fn get_address_utxos_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/address/some-address/txs/utxo", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from(
+    "/address/some-address/txs/utxo",
+    200,
+    Method::GET,
+    "",
+    &body,
+  );
 
   // act
   let _response = murray
@@ -482,7 +523,7 @@ fn get_hashrate_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/hashrate", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/hashrate", 200, Method::GET, "", &body);
 
   // act
   let response = murray.blockchain.get_hashrate().unwrap();
@@ -501,7 +542,7 @@ fn get_hashrate_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/hashrate", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from("/hashrate", 400, Method::GET, "", &body);
 
   // act
   let _response = murray.blockchain.get_hashrate().unwrap();
@@ -513,7 +554,7 @@ fn get_hashrate_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/hashrate", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from("/hashrate", 200, Method::GET, "", &body);
 
   // act
   let _response = murray.blockchain.get_hashrate().unwrap();
@@ -528,7 +569,7 @@ fn get_health_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/health", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/health", 200, Method::GET, "", &body);
 
   // act
   let response = murray.blockchain.get_health().unwrap();
@@ -544,7 +585,7 @@ fn get_health_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/health", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from("/health", 400, Method::GET, "", &body);
 
   // act
   let _response = murray.blockchain.get_health().unwrap();
@@ -556,7 +597,7 @@ fn get_health_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/health", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from("/health", 200, Method::GET, "", &body);
 
   // act
   let _response = murray.blockchain.get_health().unwrap();
@@ -571,7 +612,7 @@ fn get_mempool_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/mempool", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/mempool", 200, Method::GET, "", &body);
 
   // act
   let response = murray.blockchain.get_mempool().unwrap();
@@ -590,7 +631,7 @@ fn get_mempool_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/mempool", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from("/mempool", 400, Method::GET, "", &body);
 
   // act
   let _response = murray.blockchain.get_mempool().unwrap();
@@ -602,7 +643,7 @@ fn get_mempool_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/mempool", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from("/mempool", 200, Method::GET, "", &body);
 
   // act
   let _response = murray.blockchain.get_mempool().unwrap();
@@ -617,7 +658,7 @@ fn get_transaction_should_return_successfully() {
   let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
   let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
   let sut = Sut::new();
-  let (mock, murray) = sut.from("/tx/some-tx-id", 200, Method::GET, &body);
+  let (mock, murray) = sut.from("/tx/some-tx-id", 200, Method::GET, "", &body);
 
   // act
   let response = murray
@@ -638,7 +679,7 @@ fn get_transaction_should_return_error_when_problem_with_server() {
   // arrange
   let body = "".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/tx/some-tx-id", 400, Method::GET, &body);
+  let (_mock, murray) = sut.from("/tx/some-tx-id", 400, Method::GET, "", &body);
 
   // act
   let _response = murray
@@ -655,13 +696,77 @@ fn get_transaction_should_return_error_when_body_returns_wrong_json() {
   // arrange
   let body = "wrong-return".to_string();
   let sut = Sut::new();
-  let (_mock, murray) = sut.from("/tx/some-tx-id", 200, Method::GET, &body);
+  let (_mock, murray) = sut.from("/tx/some-tx-id", 200, Method::GET, "", &body);
 
   // act
   let _response = murray
     .blockchain
     .get_transaction(GetTransactionParams {
       txid: "some-tx-id".to_string(),
+    })
+    .unwrap();
+}
+
+/// POST TRANSACTION
+#[test]
+fn post_transaction_should_return_successfully() {
+  // arrange
+  let expected_response =
+    fs::read_to_string("tests/mocks/post-transaction.json").expect("Unable to read file");
+  let expected_response: Value = serde_json::from_str(&expected_response).expect("Unable to parse");
+  let body = format!(r#"{{"data":  {}}}"#, expected_response.to_string());
+  let sut = Sut::new();
+  let tx_hex = "some-tx-hex";
+  let req_body = format!(r#"{{"txHex":"{}"}}"#, tx_hex);
+  let (mock, murray) = sut.from("/tx", 200, Method::POST, &req_body, &body);
+
+  // act
+  let response = murray
+    .blockchain
+    .post_transaction(PostTransactionParams {
+      tx_hex: tx_hex.to_string(),
+    })
+    .unwrap();
+
+  // assert
+  mock.assert();
+  assert_eq!(response.txid, expected_response["txid"]);
+}
+
+#[test]
+#[should_panic]
+fn post_transaction_should_return_error_when_problem_with_server() {
+  // arrange
+  let body = "".to_string();
+  let sut = Sut::new();
+  let tx_hex = "some-tx-hex";
+  let req_body = format!(r#"{{"txHex":"{}"}}"#, tx_hex);
+  let (_mock, murray) = sut.from("/tx", 400, Method::POST, &req_body, &body);
+
+  // act
+  let _response = murray
+    .blockchain
+    .post_transaction(PostTransactionParams {
+      tx_hex: tx_hex.to_string(),
+    })
+    .unwrap();
+}
+
+#[test]
+#[should_panic]
+fn post_transaction_should_return_error_when_body_returns_wrong_json() {
+  // arrange
+  let body = "wrong-return".to_string();
+  let sut = Sut::new();
+  let tx_hex = "some-tx-hex";
+  let req_body = format!(r#"{{"txHex":"{}"}}"#, tx_hex);
+  let (_mock, murray) = sut.from("/tx", 200, Method::POST, &req_body, &body);
+
+  // act
+  let _response = murray
+    .blockchain
+    .post_transaction(PostTransactionParams {
+      tx_hex: tx_hex.to_string(),
     })
     .unwrap();
 }
